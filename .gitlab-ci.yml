@@ -1,0 +1,24 @@
+stages:
+  - lint
+  - test
+
+default:
+  image: python:3.12
+  before_script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+
+lint:
+  stage: lint
+  script:
+    - flake8 . --max-line-length=100 --exclude=migrations,.venv
+
+test:
+  stage: test
+  variables:
+    SECRET_KEY: "ci-secret-key"
+    DEBUG: "False"
+    USE_POSTGRES: "False"
+  script:
+    - python manage.py migrate
+    - pytest
