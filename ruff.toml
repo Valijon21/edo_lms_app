@@ -1,0 +1,14 @@
+# Ruff configuration
+exclude = [
+    ".git",
+    ".venv",
+    "venv",
+    ".agents",
+    ".agent",
+    "__pycache__",
+    "build",
+    "dist"
+]
+line-length = 120
+indent-width = 4
+target-version = "py311"
