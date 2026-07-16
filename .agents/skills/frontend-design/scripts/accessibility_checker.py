@@ -13,7 +13,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-SKIP_DIRS = {"node_modules", ".next", "dist", "build", ".git", "coverage", "out"}
+SKIP_DIRS = {"node_modules", ".next", "dist", "build", ".git", "coverage", "out", ".venv", "venv"}
 
 
 def find_html_files(project_path: Path) -> list[Path]:
