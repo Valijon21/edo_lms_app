@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block title %}Mening Progressim — Ijro.uz o'quv{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-md-8">
+    <h1 class="display-6 fw-bold text-primary mb-1">Mening O'quv Dashboardim</h1>
+    <p class="text-muted">Profil: <strong class="text-dark">{{ user.username }}</strong> | Roli: <span class="badge bg-secondary">{% if user.profile %}{{ user.profile.get_role_display }}{% else %}Foydalanuvchi{% endif %}</span></p>
+  </div>
+</div>
+
+<!-- Umumiy natija ko'rsatkichi -->
+<div class="row mb-5">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3">
+        <div>
+          <h3 class="h5 fw-bold text-dark mb-1">Umumiy o'zlashtirish progressi</h3>
+          <p class="text-muted small mb-0">Tugallangan darslar: {{ completed_lessons }} ta / Jami: {{ total_lessons }} ta</p>
+        </div>
+        <div class="mt-2 mt-sm-0 text-sm-end">
+          <span class="fs-2 fw-bold text-primary">{{ completion_percentage }}%</span>
+        </div>
+      </div>
+      <div class="progress rounded-pill" style="height: 15px;">
+        <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ completion_percentage }}%" aria-valuenow="{{ completion_percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Kurslar bo'yicha progress -->
+  <div class="col-lg-7 mb-4 mb-lg-0">
+    <h2 class="h4 fw-bold text-dark mb-4">Mening Kurslarim</h2>
+    <div class="d-flex flex-column gap-3">
+      {% for cp in course_progress %}
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h4 class="h6 fw-bold text-dark mb-0">{{ cp.course.title }}</h4>
+            <span class="badge bg-primary-subtle text-primary rounded-pill fw-semibold">{{ cp.percentage }}%</span>
+          </div>
+          <p class="text-muted small mb-3">Darslar: {{ cp.completed_lessons }} ta o'qildi / {{ cp.total_lessons }} ta jami</p>
+          <div class="progress rounded-pill mb-3" style="height: 8px;">
+            <div class="progress-bar bg-success" role="progressbar" style="width: {{ cp.percentage }}%" aria-valuenow="{{ cp.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div class="text-end">
+            <a href="{% url 'courses:course_detail' cp.course.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+              Darslarni ko'rish
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="p-4 bg-light rounded-4 text-center">
+          <p class="text-muted mb-0">Hozircha kurslar mavjud emas.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Sertifikatlar va Testlar Tarixi -->
+  <div class="col-lg-5">
+    <!-- Sertifikatlar -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+      <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-award text-warning me-2"></i> Sertifikatlarim</h3>
+      {% if certificates %}
+        <div class="d-flex flex-column gap-2">
+          {% for cert in certificates %}
+            <div class="d-flex align-items-center p-3 bg-warning-subtle rounded-3 border border-warning-subtle">
+              <i class="bi bi-file-earmark-pdf-fill text-danger fs-3 me-3"></i>
+              <div>
+                <h5 class="fw-bold text-dark mb-0 small">{{ cert.course.title }}</h5>
+                <span class="text-muted small">Berilgan sana: {{ cert.issued_at|date:"d.m.Y H:i" }}</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted mb-0 small">Hozircha hech qanday sertifikat olmagansiz. Kurslarni yakunlang va testlardan muvaffaqiyatli o'ting.</p>
+      {% endif %}
+    </div>
+
+    <!-- Test topshirish urinishlari -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+      <h3 class="h5 fw-bold text-dark mb-3"><i class="bi bi-journal-check text-primary me-2"></i> Test urinishlari</h3>
+      {% if attempts %}
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0">
+            <thead>
+              <tr class="text-muted small">
+                <th>Modul</th>
+                <th>Ball</th>
+                <th>Natija</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for attempt in attempts %}
+                <tr class="small">
+                  <td class="text-truncate fw-medium text-dark" style="max-width: 120px;" title="{{ attempt.module.title }}">{{ attempt.module.title }}</td>
+                  <td class="fw-bold {% if attempt.passed %}text-success{% else %}text-danger{% endif %}">{{ attempt.score }}%</td>
+                  <td>
+                    {% if attempt.passed %}
+                      <span class="badge bg-success-subtle text-success border border-success-subtle fw-semibold rounded-pill">O'tdi</span>
+                    {% else %}
+                      <span class="badge bg-danger-subtle text-danger border border-danger-subtle fw-semibold rounded-pill">O'ta olmadi</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted mb-0 small">Siz hali test topshirmagansiz.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

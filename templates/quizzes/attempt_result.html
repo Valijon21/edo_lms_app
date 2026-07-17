@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Natija — {% if attempt.lesson %}{{ attempt.lesson.title }}{% else %}{{ attempt.module.title }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-lg rounded-3xl overflow-hidden mb-5 glass-card text-center transition-all duration-300">
+      {% if attempt.passed %}
+        <div class="bg-gradient-to-br from-emerald-500 to-teal-600 text-white py-5 px-4 shadow-sm">
+          <div class="mb-3 animate-float bg-white/20 d-inline-block p-4 rounded-full border border-white/10">
+            <i class="bi bi-patch-check-fill display-2 text-white"></i>
+          </div>
+          <h1 class="fw-extrabold mb-2 h2" style="font-family: 'Outfit', sans-serif;">Ajoyib natija!</h1>
+          <p class="fs-5 mb-0 opacity-90 fw-medium">Siz ushbu {% if attempt.lesson %}mavzu{% else %}dars{% endif %} testidan muvaffaqiyatli o'tdingiz.</p>
+        </div>
+      {% else %}
+        <div class="bg-gradient-to-br from-rose-500 to-red-600 text-white py-5 px-4 shadow-sm">
+          <div class="mb-3 animate-float bg-white/20 d-inline-block p-4 rounded-full border border-white/10">
+            <i class="bi bi-exclamation-triangle-fill display-2 text-white"></i>
+          </div>
+          <h1 class="fw-extrabold mb-2 h2" style="font-family: 'Outfit', sans-serif;">Afsuski, o'ta olmadingiz</h1>
+          <p class="fs-5 mb-0 opacity-90 fw-medium">Bilimingizni yanada mustahkamlab, qayta urinib ko'ring.</p>
+        </div>
+      {% endif %}
+
+      <div class="card-body p-4 p-md-5 bg-white/60">
+        <div class="row justify-content-center mb-5">
+          <div class="col-sm-8 col-md-6">
+            <div class="p-4 bg-white/80 rounded-3xl border border-gray-100 shadow-sm">
+              <h4 class="text-gray-400 small fw-bold text-uppercase mb-2 tracking-wider" style="font-family: 'Outfit', sans-serif;">To'plangan ball</h4>
+              <span class="display-3 fw-extrabold {% if attempt.passed %}text-emerald-600{% else %}text-rose-600{% endif %}" style="font-family: 'Outfit', sans-serif;">
+                {{ attempt.score }}%
+              </span>
+              <div class="progress mt-4 rounded-full bg-gray-100 border border-gray-50 overflow-hidden" style="height: 12px;">
+                <div class="progress-bar {% if attempt.passed %}bg-gradient-to-r from-emerald-400 to-teal-500{% else %}bg-gradient-to-r from-rose-400 to-red-500{% endif %}" role="progressbar" style="width: {{ attempt.score }}%" aria-valuenow="{{ attempt.score }}" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Xatolar va to'g'ri javoblar ro'yxati -->
+        {% if incorrect_questions %}
+          <div class="text-start mt-4">
+            <h3 class="h5 fw-extrabold text-gray-900 mb-4 border-bottom border-gray-100 pb-3" style="font-family: 'Outfit', sans-serif;">
+              <i class="bi bi-x-circle text-rose-500 me-2 fs-5"></i> Yo'l qo'yilgan xatolar va to'g'ri javoblar:
+            </h3>
+            
+            <div class="d-flex flex-column gap-3.5">
+              {% for item in incorrect_questions %}
+                <div class="p-4 bg-white border border-gray-150 rounded-2xl shadow-xs transition-all hover:border-gray-300">
+                  <h5 class="fw-bold text-gray-900 mb-3 fs-6 d-flex align-items-start leading-snug">
+                    <span class="text-rose-500 bg-rose-50 border border-rose-100 rounded-lg px-2 py-0.5 me-3.5 text-xs font-bold shadow-sm">Xato #{{ forloop.counter }}</span>
+                    <span class="pt-0.5" style="font-family: 'Outfit', sans-serif;">{{ item.question_text }}</span>
+                  </h5>
+                  <div class="small bg-gray-50/60 p-3.5 rounded-xl border border-gray-100/50 flex flex-col gap-2">
+                    <div class="text-rose-600 fw-medium d-flex align-items-center gap-2">
+                      <i class="bi bi-x-lg text-rose-500"></i>
+                      <span><strong>Sizning javobingiz:</strong> <del class="text-rose-700 opacity-90">{{ item.selected_answer }}</del></span>
+                    </div>
+                    <div class="text-emerald-600 fw-bold d-flex align-items-center gap-2 mt-1">
+                      <i class="bi bi-check-lg text-emerald-500"></i>
+                      <span><strong>To'g'ri javob:</strong> <span class="text-emerald-700">{{ item.correct_answer }}</span></span>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mt-5">
+          {% if attempt.lesson %}
+            <a href="{% url 'courses:lesson_detail' attempt.lesson.id %}" class="btn btn-light bg-gray-100 hover:bg-gray-200 border-0 rounded-full px-5 py-3 text-gray-600 fw-bold shadow-sm transition-all d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-arrow-left-short fs-5"></i> Mavzuga qaytish
+            </a>
+            {% if attempt.passed %}
+              <a href="{% url 'courses:course_detail' attempt.module.course.id %}" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-5 py-3 fw-bold shadow-md hover:shadow-lg transition-all d-flex align-items-center justify-content-center gap-2">
+                Darsga qaytish <i class="bi bi-arrow-right-short fs-5"></i>
+              </a>
+            {% else %}
+              <a href="{% url 'quizzes:lesson_quiz_take' attempt.lesson.id %}" class="btn btn-danger bg-rose-600 hover:bg-rose-700 text-white border-0 rounded-full px-5 py-3 fw-bold shadow-md hover:shadow-lg transition-all d-flex align-items-center justify-content-center gap-2 animate-pulse-glow">
+                <i class="bi bi-arrow-counterclockwise"></i> Qayta urinib ko'rish
+              </a>
+            {% endif %}
+          {% else %}
+            <a href="{% url 'courses:course_detail' attempt.module.course.id %}" class="btn btn-light bg-gray-100 hover:bg-gray-200 border-0 rounded-full px-5 py-3 text-gray-600 fw-bold shadow-sm transition-all d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-arrow-left-short fs-5"></i> Kurs sahifasiga qaytish
+            </a>
+            {% if attempt.passed %}
+              <a href="{% url 'courses:course_list' %}" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-5 py-3 fw-bold shadow-md hover:shadow-lg transition-all d-flex align-items-center justify-content-center gap-2">
+                Barcha kurslar <i class="bi bi-grid-fill"></i>
+              </a>
+            {% else %}
+              <a href="{% url 'quizzes:quiz_take' attempt.module.id %}" class="btn btn-danger bg-rose-600 hover:bg-rose-700 text-white border-0 rounded-full px-5 py-3 fw-bold shadow-md hover:shadow-lg transition-all d-flex align-items-center justify-content-center gap-2 animate-pulse-glow">
+                <i class="bi bi-arrow-counterclockwise"></i> Qayta urinib ko'rish
+              </a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

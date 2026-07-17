@@ -26,7 +26,8 @@ def register(request):
 @login_required
 def profile(request):
     """Foydalanuvchi profilini ko'rish va tahrirlash."""
-    profile_obj = request.user.profile
+    from .models import Profile
+    profile_obj, _ = Profile.objects.get_or_create(user=request.user)
     if request.method == "POST":
         form = ProfileForm(request.POST, instance=profile_obj)
         if form.is_valid():

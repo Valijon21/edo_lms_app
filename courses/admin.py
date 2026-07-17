@@ -21,10 +21,23 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
-    list_display = ("title", "course", "order")
+    list_display = ("title", "course", "order", "max_attempts")
     inlines = [LessonInline]
+
+    class Media:
+        js = (
+            "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js",
+            "js/admin_tinymce.js",
+        )
 
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ("title", "module", "order")
+    list_display = ("title", "module", "order", "max_attempts")
+
+    class Media:
+        js = (
+            "https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js",
+            "js/admin_tinymce.js",
+        )
+

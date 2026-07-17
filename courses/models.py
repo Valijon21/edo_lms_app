@@ -1,4 +1,4 @@
-"""Kurs, modul va dars modellari (3-bosqichda kengaytiriladi)."""
+"""Kurs, dars va mavzu modellari (UI: Modul=Dars, Lesson=Mavzu)."""
 from django.db import models
 
 
@@ -21,6 +21,10 @@ class Module(models.Model):
     )
     title = models.CharField(max_length=255)
     order = models.PositiveIntegerField(default=0)
+    max_attempts = models.PositiveIntegerField(
+        default=6, null=True, blank=True,
+        help_text="Maksimal urinishlar soni. Bo'sh yoki 0 bo'lsa - cheksiz."
+    )
 
     class Meta:
         ordering = ["order", "id"]
@@ -37,6 +41,10 @@ class Lesson(models.Model):
     content = models.TextField(blank=True)
     video_url = models.URLField(blank=True)
     order = models.PositiveIntegerField(default=0)
+    max_attempts = models.PositiveIntegerField(
+        default=6, null=True, blank=True,
+        help_text="Maksimal urinishlar soni. Bo'sh yoki 0 bo'lsa - cheksiz."
+    )
 
     class Meta:
         ordering = ["order", "id"]

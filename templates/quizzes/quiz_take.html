@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Test Topshirish — {% if quiz_type == 'lesson' %}{{ lesson.title }}{% else %}{{ module.title }}{% endif %}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+  <ol class="breadcrumb bg-white/60 backdrop-blur px-4 py-3 rounded-2xl shadow-sm border border-white/40">
+    <li class="breadcrumb-item"><a href="{% url 'courses:course_list' %}" class="text-indigo-600 fw-medium text-decoration-none hover:text-indigo-800">Kurslar</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'courses:course_detail' module.course.id %}" class="text-indigo-600 fw-medium text-decoration-none hover:text-indigo-800">{{ module.course.title }}</a></li>
+    {% if quiz_type == 'lesson' %}
+      <li class="breadcrumb-item"><a href="{% url 'courses:lesson_detail' lesson.id %}" class="text-indigo-600 fw-medium text-decoration-none hover:text-indigo-800">{{ lesson.title }}</a></li>
+      <li class="breadcrumb-item active text-gray-500 fw-semibold" aria-current="page">Mavzu testi</li>
+    {% else %}
+      <li class="breadcrumb-item active text-gray-500 fw-semibold" aria-current="page">Dars testi: {{ module.title }}</li>
+    {% endif %}
+  </ol>
+</nav>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-lg rounded-3xl overflow-hidden mb-5 glass-card">
+      <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900 text-white py-5 px-4 text-center shadow-md">
+        <span class="badge bg-white/20 text-white rounded-full px-4 py-1.5 mb-2 fw-bold text-uppercase fs-8 tracking-wider border border-white/10" style="font-family: 'Outfit', sans-serif;">
+          {% if quiz_type == 'lesson' %}Mavzu Testi{% else %}Dars Testi{% endif %}
+        </span>
+        <h2 class="h3 fw-extrabold mb-1 text-white tracking-tight" style="font-family: 'Outfit', sans-serif;">
+          {% if quiz_type == 'lesson' %}{{ lesson.title }}{% else %}{{ module.title }}{% endif %}
+        </h2>
+        <p class="text-indigo-100 mb-0 mt-2 small opacity-90 fw-medium">
+          <i class="bi bi-patch-question me-1"></i> Savollar soni: {{ questions.count }} ta &nbsp;|&nbsp; 
+          <i class="bi bi-check-circle me-1"></i> Minimal o'tish balli: 70%
+        </p>
+      </div>
+      
+      <form method="post" action="{% if quiz_type == 'lesson' %}{% url 'quizzes:lesson_quiz_submit' lesson.id %}{% else %}{% url 'quizzes:quiz_submit' module.id %}{% endif %}" class="card-body p-4 p-md-5 bg-white/60">
+        {% csrf_token %}
+        
+        {% for question in questions %}
+          <div class="question-block {% if not forloop.last %}mb-5{% endif %}">
+            <h4 class="fw-extrabold text-gray-900 h5 mb-4 d-flex align-items-start leading-snug">
+              <span class="text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2.5 py-0.5 me-3 text-base font-bold shadow-sm">{{ forloop.counter }}</span>
+              <span class="pt-0.5" style="font-family: 'Outfit', sans-serif;">{{ question.text }}</span>
+            </h4>
+            
+            <div class="row g-3">
+              {% for answer in question.answers.all %}
+                <div class="col-12">
+                  <input type="radio" class="btn-check" name="question_{{ question.id }}" id="ans-{{ answer.id }}" value="{{ answer.id }}" required>
+                  <label class="quiz-option-label text-gray-800 transition-all duration-200" for="ans-{{ answer.id }}">
+                    <span class="custom-radio-circle me-3">
+                      {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% elif forloop.counter == 5 %}E{% elif forloop.counter == 6 %}F{% elif forloop.counter == 7 %}G{% elif forloop.counter == 8 %}H{% else %}{{ forloop.counter }}{% endif %}
+                    </span>
+                    <span class="fw-medium text-base">{{ answer.text }}</span>
+                  </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% if not forloop.last %}<hr class="my-5 border-gray-100">{% endif %}
+        {% endfor %}
+
+        <div class="text-center mt-5">
+          <button type="submit" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-5 py-3 fw-extrabold shadow-md hover:shadow-lg transition-all duration-200 d-flex align-items-center gap-2 mx-auto">
+            Natijalarni tekshirish <i class="bi bi-chevron-right fs-5"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

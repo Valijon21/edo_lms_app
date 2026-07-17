@@ -10,11 +10,17 @@ class AnswerInline(admin.TabularInline):
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ("text", "module")
+    list_display = ("text", "module", "lesson")
+    list_filter = ("module", "lesson")
     inlines = [AnswerInline]
+
+    class Media:
+        js = (
+            "js/admin_quiz.js",
+        )
 
 
 @admin.register(QuizAttempt)
 class QuizAttemptAdmin(admin.ModelAdmin):
-    list_display = ("user", "module", "score", "passed", "created_at")
-    list_filter = ("passed",)
+    list_display = ("user", "module", "lesson", "score", "passed", "created_at")
+    list_filter = ("passed", "module", "lesson")

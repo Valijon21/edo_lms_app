@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}{{ course.title }} — Ijro.uz o'quv{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+  <ol class="breadcrumb bg-white/60 backdrop-blur px-4 py-3 rounded-2xl shadow-sm border border-white/40">
+    <li class="breadcrumb-item"><a href="{% url 'courses:course_list' %}" class="text-indigo-600 fw-medium text-decoration-none hover:text-indigo-800">Kurslar</a></li>
+    <li class="breadcrumb-item active text-gray-500 fw-semibold" aria-current="page">{{ course.title }}</li>
+  </ol>
+</nav>
+
+<!-- Kurs Header -->
+<div class="card border-0 shadow-lg rounded-3xl overflow-hidden mb-5 bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 text-white transition-all duration-300">
+  <div class="card-body p-5 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
+    <div class="max-w-2xl">
+      <span class="badge bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full px-4 py-1.5 mb-3 fw-bold text-uppercase fs-8 tracking-wider" style="font-family: 'Outfit', sans-serif;">
+        O'QUV DASTURI
+      </span>
+      <h1 class="display-6 fw-extrabold text-white tracking-tight leading-tight mb-3" style="font-family: 'Outfit', sans-serif;">{{ course.title }}</h1>
+      <p class="text-indigo-200/80 fs-5 mb-0 leading-relaxed font-light">{{ course.description }}</p>
+    </div>
+    <div class="flex-shrink-0 text-md-end">
+      <span class="badge bg-white/10 text-white fs-6 rounded-2xl px-4 py-3 border border-white/10 shadow-sm fw-semibold backdrop-blur d-flex align-items-center gap-2">
+        <i class="bi bi-collection-play text-indigo-300 fs-5"></i>
+        <span>Darslar soni: <strong>{{ course.modules.count }} ta</strong></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-9 mx-auto">
+    <h2 class="h4 fw-extrabold text-gray-900 mb-4 tracking-tight" style="font-family: 'Outfit', sans-serif;">
+      <i class="bi bi-list-nested text-indigo-600 me-2"></i> Kurs tarkibi
+    </h2>
+    
+    {% if course.modules.all %}
+      <div class="accordion border-0 shadow-sm rounded-3xl overflow-hidden" id="courseModulesAccordion">
+        {% for module in course.modules.all %}
+          <div class="accordion-item border-0 border-bottom border-gray-100 bg-white/70 backdrop-blur">
+            <h2 class="accordion-header" id="heading-{{ module.id }}">
+              <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} fw-extrabold py-4 px-4 fs-5 text-gray-900 bg-transparent border-0 shadow-none d-flex gap-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ module.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="collapse-{{ module.id }}" style="font-family: 'Outfit', sans-serif;">
+                <span class="text-indigo-600">#{{ forloop.counter }}</span>
+                <span>{{ module.title }}</span>
+              </button>
+            </h2>
+            <div id="collapse-{{ module.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading-{{ module.id }}" data-bs-parent="#courseModulesAccordion">
+              <div class="accordion-body p-4 bg-gray-50/50">
+                {% if module.lessons.all %}
+                  <div class="list-group list-group-flush rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white mb-3">
+                    {% for lesson in module.lessons.all %}
+                      <a href="{% url 'courses:lesson_detail' lesson.id %}" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between py-3.5 px-4 interactive-item border-0 border-bottom border-gray-100 bg-transparent">
+                        <div class="d-flex align-items-center">
+                          {% if lesson.video_url %}
+                            <i class="bi bi-play-circle-fill text-indigo-500 me-3 fs-5"></i>
+                          {% else %}
+                            <i class="bi bi-file-text-fill text-indigo-400 me-3 fs-5"></i>
+                          {% endif %}
+                          <div>
+                            <span class="fw-semibold text-gray-800">{{ lesson.title }}</span>
+                            {% if lesson.video_url %}
+                              <span class="badge bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full ms-2 fw-medium px-2 py-0.5 shadow-sm small">Video dars</span>
+                            {% endif %}
+                            {% if lesson.questions.exists %}
+                              <span class="badge bg-amber-50 text-amber-700 border border-amber-100 rounded-full ms-2 fw-medium px-2 py-0.5 shadow-sm small">Mavzu testi</span>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <span class="text-indigo-600 fw-bold small d-flex align-items-center gap-1">Ko'rish <i class="bi bi-chevron-right text-indigo-400"></i></span>
+                      </a>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <p class="text-gray-500 italic mb-3 text-center py-4 bg-white rounded-2xl border border-gray-100">Ushbu darsda hozircha mavzular mavjud emas.</p>
+                {% endif %}
+                
+                <!-- Modul yakuniy testi -->
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center bg-gradient-to-r from-indigo-50 to-indigo-100/50 p-4 rounded-2xl border border-indigo-100 shadow-xs mt-4">
+                  <div class="mb-3 mb-sm-0">
+                    <h5 class="fw-extrabold mb-1 text-indigo-950" style="font-family: 'Outfit', sans-serif;">Dars yakuniy testi</h5>
+                    <p class="text-gray-600 small mb-0">Bilimingizni sinab ko'ring va ushbu dars bo'limini to'liq yakunlang (o'tish: 70%).</p>
+                  </div>
+                  <div>
+                    <a href="{% url 'quizzes:quiz_take' module.id %}" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-4 py-2.5 fw-bold shadow-sm transition-all duration-200">
+                      Test topshirish &rarr;
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-5 bg-white rounded-3xl border border-gray-150 shadow-sm">
+        <i class="bi bi-journal-x display-4 text-gray-300 mb-3 d-block"></i>
+        <p class="text-gray-500 mb-0 fw-semibold">Ushbu kurs uchun hech qanday dars qo'shilmagan.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,396 @@
+{% extends 'base.html' %}
+{% block title %}Platformalar haqida batafsil ma'lumot — Ijro.uz{% endblock %}
+
+{% block content %}
+<!-- Premium Custom CSS to enhance original layout and readability -->
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+    border-color: rgba(79, 70, 229, 0.15);
+  }
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
+  }
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(229, 231, 235, 0.8) 0%, rgba(229, 231, 235, 0) 100%);
+  }
+</style>
+
+<!-- Asosiy Sarlavha -->
+<div class="row mb-5 text-center py-4">
+  <div class="col-lg-9 mx-auto">
+    <span class="badge bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-full px-3.5 py-2 mb-3 fw-bold text-uppercase fs-7 tracking-wider" style="font-family: 'Outfit', sans-serif;">
+      DASTURIY TA'MINOT VA ISLOHOTLAR
+    </span>
+    <h1 class="display-4 fw-extrabold text-gray-900 mb-3 tracking-tight" style="font-family: 'Outfit', sans-serif; font-size: 2.75rem;">Platformalar Haqida Ma'lumot</h1>
+    <p class="text-gray-600 fs-5 leading-relaxed max-w-2xl mx-auto">
+      Davlat boshqaruvi va islohotlari doirasida joriy etilgan "Raqamli mahalla" hamda "Edo.ijro.uz" axborot tizimlarining funksional va huquqiy tahlili.
+    </p>
+  </div>
+</div>
+
+<div class="row g-4 g-lg-5">
+  <!-- ================= RAQAMLI MAHALLA PLATFORMASI ================= -->
+  <div class="col-lg-6">
+    <div class="card border-0 rounded-3xl overflow-hidden glass-card h-100">
+      <!-- Card Header -->
+      <div class="bg-gradient-to-br from-emerald-600 to-teal-800 text-white p-5 shadow-sm">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div class="bg-white/20 p-3 rounded-2xl border border-white/10 animate-float">
+            <i class="bi bi-houses-fill text-white fs-2"></i>
+          </div>
+          <span class="badge bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 rounded-full px-3.5 py-2 fw-bold text-uppercase fs-7 tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            MILLIY TIZIM
+          </span>
+        </div>
+        <h2 class="h3 fw-extrabold text-white mb-2 tracking-tight" style="font-family: 'Outfit', sans-serif;">"Raqamli mahalla" platformasi</h2>
+        <p class="text-emerald-100 mb-0 leading-relaxed font-light fs-6">Mahalla va aholi ma'lumotlarini jamlovchi yagona integratsiyalashgan axborot tizimi.</p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body p-4 p-md-5 bg-white/70">
+        <!-- Huquqiy Asos -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-bank text-emerald-600 me-2 fs-5"></i> Huquqiy Asosi
+          </h4>
+          <p class="text-gray-700 leading-relaxed fs-5 bg-emerald-50/40 p-4 rounded-2xl border border-emerald-100/50 mb-0">
+            <strong>2022-yil 22-avgustdagi PQ-357</strong> va <strong>2023-yil 21-dekabrdagi PQ-402-son</strong> Prezident qarorlari asosida amaliy tashabbus sifatida boshlangan bo‘lib, <strong>2024-yil 21-fevraldagi PF-37-son</strong> Prezident farmoni bilan davlat siyosati va islohotlari darajasiga ko‘tarildi.
+          </p>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Maqsadi -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-2.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-flag-fill text-emerald-600 me-2 fs-5"></i> Asosiy Maqsadi
+          </h4>
+          <p class="text-gray-700 leading-relaxed fs-5 mb-0">
+            Mahalla "yettiligi"ning tarqoq ma’lumotlarini yagona elektron bazaga jamlash, aholi muammolarini joyida aniqlash hamda ijtimoiy yordam, kreditlar, subsidiyalar va davlat xizmatlarini manzilli va shaffof tashkil etishga xizmat qiladi.
+          </p>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Tizim Modullari va vazifalari -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-grid-3x3-gap text-emerald-600 me-2 fs-5"></i> Tizim Modullari va Funktsiyalari
+          </h4>
+          <div class="d-flex flex-column gap-3">
+            <div class="bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-emerald-50/20 hover:border-emerald-100 transition-all">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-extrabold text-gray-800 fs-6">Kollegial qarorlar</span>
+                <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium text-xs">PF-209 5-ilova</span>
+              </div>
+              <p class="text-gray-600 fs-6 leading-relaxed mb-0">Mahalladagi oilaviy nizolar, ajrimlar va ijtimoiy masalalarni kollegial hal etish.</p>
+            </div>
+            <div class="bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-emerald-50/20 hover:border-emerald-100 transition-all">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-extrabold text-gray-800 fs-6">Yagona savolnoma</span>
+                <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium text-xs">PF-37 4-ilova</span>
+              </div>
+              <p class="text-gray-600 fs-6 leading-relaxed mb-0">Fuqarolarning ehtiyojlari va moddiy holatini yagona raqamli so'rovnoma orqali baholash.</p>
+            </div>
+            <div class="bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-emerald-50/20 hover:border-emerald-100 transition-all">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-extrabold text-gray-800 fs-6">Migratsiya balansi</span>
+                <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium text-xs">PQ-402 23-b</span>
+              </div>
+              <p class="text-gray-600 fs-6 leading-relaxed mb-0">Doimiy va vaqtincha yashovchi, xorijga ketgan aholining real vaqtda harakat hisobini yuritish.</p>
+            </div>
+            <div class="bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-emerald-50/20 hover:border-emerald-100 transition-all">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-extrabold text-gray-800 fs-6">Ijtimoiy shartnoma</span>
+                <span class="badge bg-emerald-50 text-emerald-700 border border-emerald-100 font-medium text-xs">PQ-402 25-b</span>
+              </div>
+              <p class="text-gray-600 fs-6 leading-relaxed mb-0">Kambag'allikdan farovonlik sari yo'nalishda oilalar bilan o'zaro majburiyatlarni belgilovchi shartnoma.</p>
+            </div>
+          </div>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Mahalla 7-ligi -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-people-fill text-emerald-600 me-2 fs-5"></i> Mahalla 7-ligi Mas'ullari
+          </h4>
+          <div class="accordion accordion-flush" id="yettilikAccordion">
+            <div class="accordion-item bg-transparent border-0 mb-2">
+              <h2 class="accordion-header" id="headingY1">
+                <button class="accordion-button collapsed bg-gray-50/70 text-gray-900 fw-bold fs-6 py-2.5 px-3 rounded-xl border border-gray-200/50 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseY1" aria-expanded="false" aria-controls="collapseY1">
+                  1. Rais, Hokim yordamchisi va Yoshlar yetakchisi
+                </button>
+              </h2>
+              <div id="collapseY1" class="accordion-collapse collapse" aria-labelledby="headingY1" data-bs-parent="#yettilikAccordion">
+                <div class="accordion-body bg-gray-50/30 border border-gray-100/60 rounded-xl p-3 fs-6 text-gray-700 leading-relaxed mt-1">
+                  - <strong>Mahalla raisi:</strong> Faoliyatni muvofiqlashtiradi, ijtimoiy va ma'naviy muhit barqarorligiga javob beradi.<br>
+                  - <strong>Hokim yordamchisi:</strong> Kambag'allikni qisqartirish, kredit va subsidiyalar ajratish hamda aholini ish bilan ta'minlashga mas'ul.<br>
+                  - <strong>Yoshlar yetakchisi:</strong> Yoshlarning bo'sh vaqtini mazmunli tashkil etadi, "Yoshlar daftari" va sport ishlarini yuritadi.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item bg-transparent border-0 mb-2">
+              <h2 class="accordion-header" id="headingY2">
+                <button class="accordion-button collapsed bg-gray-50/70 text-gray-900 fw-bold fs-6 py-2.5 px-3 rounded-xl border border-gray-200/50 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseY2" aria-expanded="false" aria-controls="collapseY2">
+                  2. Xotin-qizlar faoli va Profilaktika inspektori
+                </button>
+              </h2>
+              <div id="collapseY2" class="accordion-collapse collapse" aria-labelledby="headingY2" data-bs-parent="#yettilikAccordion">
+                <div class="accordion-body bg-gray-50/30 border border-gray-100/60 rounded-xl p-3 fs-6 text-gray-700 leading-relaxed mt-1">
+                  - <strong>Xotin-qizlar faoli:</strong> Ayollar bandligi, huquqlari va ijtimoiy himoyasini, shuningdek, "Ayollar daftari"ni yuritadi.<br>
+                  - <strong>Profilaktika inspektori:</strong> Mahallada huquqbuzarliklar profilaktikasini olib boradi va jamoat xavfsizligini ta'minlaydi.
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item bg-transparent border-0">
+              <h2 class="accordion-header" id="headingY3">
+                <button class="accordion-button collapsed bg-gray-50/70 text-gray-900 fw-bold fs-6 py-2.5 px-3 rounded-xl border border-gray-200/50 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapseY3" aria-expanded="false" aria-controls="collapseY3">
+                  3. Soliq inspektori va Ijtimoiy xodim
+                </button>
+              </h2>
+              <div id="collapseY3" class="accordion-collapse collapse" aria-labelledby="headingY3" data-bs-parent="#yettilikAccordion">
+                <div class="accordion-body bg-gray-50/30 border border-gray-100/60 rounded-xl p-3 fs-6 text-gray-700 leading-relaxed mt-1">
+                  - <strong>Soliq inspektori:</strong> Mahalladagi tadbirkorlik subyektlarini qo'llab-quvvatlaydi va mahalliy soliq tushumlarini nazorat qiladi.<br>
+                  - <strong>Ijtimoiy xodim:</strong> Keksalar, nogironligi bor shaxslar va o'zgalar parvarishiga muhtoj oilalarga manzilli yordam ko'rsatadi.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Integratsiyalar -->
+        <div>
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-diagram-3-fill text-emerald-600 me-2 fs-5"></i> Integratsiya holati
+          </h4>
+          <div class="bg-gradient-to-r from-emerald-50 to-teal-50/30 p-4 rounded-2xl border border-emerald-100/50 d-flex align-items-center gap-3">
+            <div class="bg-emerald-600 text-white rounded-full w-14 h-14 d-flex align-items-center justify-content-center fw-black fs-3 flex-shrink-0" style="font-family: 'Outfit', sans-serif; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);">
+              35
+            </div>
+            <div class="text-gray-700 fs-5 leading-normal">
+              Raqamli mahalla platformasi **35 ta** davlat vazirlik va idoralarining axborot tizimlariga integratsiya qilinishi belgilangan.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EDO.IJRO.UZ PLATFORMASI ================= -->
+  <div class="col-lg-6">
+    <div class="card border-0 rounded-3xl overflow-hidden glass-card h-100">
+      <!-- Card Header -->
+      <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white p-5 shadow-sm">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+          <div class="bg-white/20 p-3 rounded-2xl border border-white/10 animate-float">
+            <i class="bi bi-file-earmark-pdf-fill text-white fs-2"></i>
+          </div>
+          <span class="badge bg-indigo-500/20 text-indigo-200 border border-indigo-500/30 rounded-full px-3.5 py-2 fw-bold text-uppercase fs-7 tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            YAGONA TIZIM
+          </span>
+        </div>
+        <h2 class="h3 fw-extrabold text-white mb-2 tracking-tight" style="font-family: 'Outfit', sans-serif;">Edo.ijro.uz tizimi</h2>
+        <p class="text-indigo-100 mb-0 leading-relaxed font-light fs-6">Respublika miqyosida yagona elektron hujjat aylanish platformasi.</p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="card-body p-4 p-md-5 bg-white/70">
+        <!-- Huquqiy Asos -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-bank text-indigo-600 me-2 fs-5"></i> Huquqiy Asosi
+          </h4>
+          <p class="text-gray-700 leading-relaxed fs-5 bg-indigo-50/40 p-4 rounded-2xl border border-indigo-100/50 mb-3">
+            Oʻzbekiston Respublikasi Prezidentining <strong>2023-yil 24-maydagi PF–76-son Farmoni</strong> hamda <strong>PQ–162-son Qarori</strong> asosida ishlab chiqilgan.
+          </p>
+          <div class="bg-amber-50/80 border border-amber-200 p-4 rounded-2xl text-gray-700 fs-5 leading-relaxed">
+            <i class="bi bg-amber-500 text-white rounded-full p-0.5 bi-info-circle text-amber-600 me-1.5 fs-6"></i>
+            <strong>Namangan tajribasi:</strong> "edo.ijro.uz" tizimini viloyat hokimligida va barcha hududiy idoralarda joriy qilish orqali qog'ozda ishlash **PF–162-son qarorga 3-ilova 65-bandida** taqiqlangan.
+          </div>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Maqsadi -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-2.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-flag-fill text-indigo-600 me-2 fs-5"></i> Asosiy Maqsadi
+          </h4>
+          <p class="text-gray-700 leading-relaxed fs-5 mb-0">
+            Davlat organlarida hujjat aylanishini to‘liq raqamlashtirish, qog‘oz hujjatlar almashinuvi va ortiqcha qog‘ozbozlikni bekor qilish, topshiriqlar ijrosi ustidan avtomatlashtirilgan real-time monitoringni ta’minlash.
+          </p>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Hujjat Hayotiy Sikli -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-arrow-repeat text-indigo-600 me-2 fs-5"></i> Hujjatning Hayotiy Sikli (Lifecycle)
+          </h4>
+          <div class="d-flex flex-column gap-2">
+            <div class="d-flex gap-2.5 align-items-start fs-6 text-gray-700">
+              <span class="badge bg-indigo-100 text-indigo-700 rounded-full px-2 py-1 font-bold">1</span>
+              <span><strong>Loyiha yaratish:</strong> Ijrochi tomonidan blanka tanlanadi va xat matni onlayn tahrirlanadi.</span>
+            </div>
+            <div class="d-flex gap-2.5 align-items-start fs-6 text-gray-700">
+              <span class="badge bg-indigo-100 text-indigo-700 rounded-full px-2 py-1 font-bold">2</span>
+              <span><strong>Kelishish (Visa):</strong> Mas'ul shaxslar bilan tizim orqali elektron kelishiladi.</span>
+            </div>
+            <div class="d-flex gap-2.5 align-items-start fs-6 text-gray-700">
+              <span class="badge bg-indigo-100 text-indigo-700 rounded-full px-2 py-1 font-bold">3</span>
+              <span><strong>ERI Imzolash:</strong> Rahbar o'zining elektron raqamli imzosi bilan hujjatni tasdiqlaydi.</span>
+            </div>
+            <div class="d-flex gap-2.5 align-items-start fs-6 text-gray-700">
+              <span class="badge bg-indigo-100 text-indigo-700 rounded-full px-2 py-1 font-bold">4</span>
+              <span><strong>Ro'yxatga olish:</strong> Tizim tomonidan raqam berilib, qabul qiluvchiga jo'natiladi.</span>
+            </div>
+          </div>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Belgilangan Joyda Modullar -->
+        <div class="mb-4 pb-4">
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3.5 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-collection-fill text-indigo-600 me-2 fs-5"></i> Asosiy Hujjat Turlari (Modullar)
+          </h4>
+          <div class="row g-3 mb-0">
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-indigo-50/20 hover:border-indigo-100 transition-all">
+                <i class="bi bi-box-arrow-in-right text-indigo-500 me-2.5 fs-4"></i>
+                <span class="fw-bold text-gray-800 fs-6">Kiruvchi hujjatlar</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-indigo-50/20 hover:border-indigo-100 transition-all">
+                <i class="bi bi-box-arrow-left text-indigo-500 me-2.5 fs-4"></i>
+                <span class="fw-bold text-gray-800 fs-6">Chiquvchi xatlar</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-indigo-50/20 hover:border-indigo-100 transition-all">
+                <i class="bi bi-clipboard-data text-indigo-500 me-2.5 fs-4"></i>
+                <span class="fw-bold text-gray-800 fs-6">Ichki buyruqlar</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="d-flex align-items-center bg-gray-50/70 p-3 rounded-2xl border border-gray-100/60 hover:bg-indigo-50/20 hover:border-indigo-100 transition-all">
+                <i class="bi bi-pen-fill text-indigo-500 me-2.5 fs-4"></i>
+                <span class="fw-bold text-gray-800 fs-6">Rezolyutsiyalar</span>
+              </div>
+            </div>
+          </div>
+          <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- Integratsiyalar -->
+        <div>
+          <h4 class="h5 fw-extrabold text-gray-900 mb-3 uppercase tracking-wider" style="font-family: 'Outfit', sans-serif;">
+            <i class="bi bi-diagram-3-fill text-indigo-600 me-2 fs-5"></i> Integratsiyalashgan Tizimlar
+          </h4>
+          <div class="d-flex flex-wrap gap-2.5">
+            <span class="badge bg-indigo-50 text-indigo-700 border border-indigo-100 px-3.5 py-2.5 rounded-xl font-bold fs-6 d-inline-flex align-items-center gap-2">
+              <i class="bi bi-globe text-indigo-500 fs-5"></i> Pm.gov.uz portali
+            </span>
+            <span class="badge bg-indigo-50 text-indigo-700 border border-indigo-100 px-3.5 py-2.5 rounded-xl font-bold fs-6 d-inline-flex align-items-center gap-2">
+              <i class="bi bi-card-text text-indigo-500 fs-5"></i> E-qaror tizimi
+            </span>
+            <span class="badge bg-indigo-50 text-indigo-700 border border-indigo-100 px-3.5 py-2.5 rounded-xl font-bold fs-6 d-inline-flex align-items-center gap-2">
+              <i class="bi bi-people-fill text-indigo-500 fs-5"></i> hrm.argos.uz
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TAQQOSLASH JADVALI VA FAQ ================= -->
+<div class="row mt-5 g-4 g-lg-5">
+  <!-- Solishtirma Jadval -->
+  <div class="col-12">
+    <div class="card border-0 rounded-3xl overflow-hidden glass-card p-4 p-md-5">
+      <h3 class="h3 fw-extrabold text-gray-900 mb-3.5 tracking-tight" style="font-family: 'Outfit', sans-serif;">
+        Ikki Platforma Solishtirma Jadvali
+      </h3>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle border-0 mb-0">
+          <thead class="bg-gray-50 border-bottom border-gray-200">
+            <tr>
+              <th scope="col" class="py-3 px-4 fw-extrabold text-indigo-900 fs-6">Xususiyat</th>
+              <th scope="col" class="py-3 px-4 fw-extrabold text-indigo-900 fs-6">Edo.ijro.uz</th>
+              <th scope="col" class="py-3 px-4 fw-extrabold text-indigo-900 fs-6">Raqamli mahalla</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="py-3 px-4 fw-bold text-gray-900 fs-6">Tashkiliy doirasi</td>
+              <td class="py-3 px-4 text-gray-700 fs-6">Respublika va viloyat davlat organlari</td>
+              <td class="py-3 px-4 text-gray-700 fs-6">Mahalla darajasidagi 7-lik xodimlari</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-4 fw-bold text-gray-900 fs-6">Asosiy maqsadi</td>
+              <td class="py-3 px-4 text-gray-700 fs-6">Qog'ozsiz rasmiy elektron hujjat aylanishi</td>
+              <td class="py-3 px-4 text-gray-700 fs-6">Aholi muammolari va ijtimoiy balans tahlili</td>
+            </tr>
+            <tr>
+              <td class="py-3 px-4 fw-bold text-gray-900 fs-6">Integratsiyalar</td>
+              <td class="py-3 px-4 text-gray-700 fs-6">Pm.gov.uz, E-qaror, Argos</td>
+              <td class="py-3 px-4 text-gray-700 fs-6">35 ta davlat vazirlik va idora tizimlari</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQAccordion -->
+  <div class="col-12">
+    <div class="card border-0 rounded-3xl overflow-hidden glass-card p-4 p-md-5">
+      <h3 class="h3 fw-extrabold text-gray-900 mb-4 tracking-tight" style="font-family: 'Outfit', sans-serif;">
+        Tez-tez so'raladigan savollar (FAQ)
+      </h3>
+      <div class="accordion accordion-flush" id="infoFaqAccordion">
+        <div class="accordion-item bg-transparent border-bottom border-gray-150 py-2">
+          <h2 class="accordion-header" id="faqH1">
+            <button class="accordion-button collapsed bg-transparent text-gray-900 fw-extrabold fs-5 py-3 shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#faqC1" aria-expanded="false" aria-controls="faqC1">
+              O'quv platformasida urinishlar soni cheklanganmi?
+            </button>
+          </h2>
+          <div id="faqC1" class="accordion-collapse collapse" aria-labelledby="faqH1" data-bs-parent="#infoFaqAccordion">
+            <div class="accordion-body text-gray-700 fs-5 leading-relaxed pt-1 pb-3">
+              Ha, har bir dars va modul uchun o'zlashtirish testlarini topshirishda cheklov mavjud bo'lib, u standart holatda 6 marta qilib belgilangan (`max_attempts`). Bu cheklov foydalanuvchining bilimini sifatli baholashga xizmat qiladi.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item bg-transparent border-0 py-2">
+          <h2 class="accordion-header" id="faqH2">
+            <button class="accordion-button collapsed bg-transparent text-gray-900 fw-extrabold fs-5 py-3 shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#faqC2" aria-expanded="false" aria-controls="faqC2">
+              Raqamli mahalla tizimining aholi uchun asosiy foydasi nima?
+            </button>
+          </h2>
+          <div id="faqC2" class="accordion-collapse collapse" aria-labelledby="faqH2" data-bs-parent="#infoFaqAccordion">
+            <div class="accordion-body text-gray-700 fs-5 leading-relaxed pt-1 pb-3">
+              Ushbu tizim orqali ishsiz fuqarolar, yoshlar yoki ijtimoiy ko'makka muhtoj ayollar yagona elektron baza orqali tezda aniqlanib, hokim yordamchisi tomonidan imtiyozli kreditlar, subsidiyalar va moddiy yordam olish huquqiga ega bo'ladilar.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

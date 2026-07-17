@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Kurslar — Ijro.uz o'quv{% endblock %}
+
+{% block content %}
+<div class="row mb-5 mt-2">
+  <div class="col-12 text-center text-md-start">
+    <span class="badge bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-full px-3 py-1.5 mb-2 fw-bold text-uppercase fs-8 tracking-wider" style="font-family: 'Outfit', sans-serif;">
+      O'QUV DARSLARI
+    </span>
+    <h1 class="display-5 fw-extrabold text-gray-900 mb-2 tracking-tight" style="font-family: 'Outfit', sans-serif;">O'quv Kurslari</h1>
+    <p class="text-gray-500 fs-5 font-light leading-relaxed">Edo.ijro.uz platformasi bo'yicha professional bilimlarni bosqichma-bosqich o'rganing.</p>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for course in courses %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-lg rounded-3xl overflow-hidden glass-card transition-all-300">
+        <div class="card-body p-4.5 d-flex flex-column bg-white/70">
+          <div class="d-flex align-items-center mb-3.5">
+            <span class="badge bg-indigo-50 text-indigo-600 border border-indigo-100 rounded-full px-3 py-1.5 fw-bold shadow-sm" style="font-family: 'Outfit', sans-serif;">
+              KURS #{{ forloop.counter }}
+            </span>
+          </div>
+          <h3 class="card-title h5 fw-extrabold text-gray-900 mb-2 tracking-tight" style="font-family: 'Outfit', sans-serif; line-height: 1.4;">{{ course.title }}</h3>
+          <p class="card-text text-gray-500 mb-4 flex-grow-1 font-light leading-relaxed text-sm">
+            {{ course.description|default:"Ushbu kurs bo'yicha tavsif hali qo'shilmagan."|truncatewords:20 }}
+          </p>
+          <div class="mt-auto pt-3">
+            <a href="{% url 'courses:course_detail' course.id %}" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white w-100 rounded-full py-2.5 fw-bold shadow-md hover:shadow-lg transition-all duration-200 d-flex align-items-center justify-content-center gap-2">
+              Kursga kirish <i class="bi bi-arrow-right-short fs-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12 text-center py-5">
+      <div class="p-5 bg-white/60 backdrop-blur rounded-3xl border border-gray-150 shadow-sm">
+        <i class="bi bi-journal-x display-3 text-gray-300 mb-3 d-block"></i>
+        <h3 class="text-gray-500 fw-bold">Kurslar mavjud emas</h3>
+        <p class="text-gray-400 mb-0 font-light">Hozirda hech qanday o'quv kursi qo'shilmagan. Keyinroq tekshirib ko'ring.</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

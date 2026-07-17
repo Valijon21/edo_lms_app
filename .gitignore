@@ -1,21 +1,77 @@
-# Python
+# ==========================================
+#   edo_lms_app Professional .gitignore
+# ==========================================
+
+# --- Python ---
 __pycache__/
 *.py[cod]
+*$py.class
 *.egg-info/
 .venv/
 venv/
 env/
+ENV/
+dist/
+build/
+*.spec
 
-# Django
-*.log
+# --- Django ---
 db.sqlite3
+db.sqlite3-journal
 media/
 staticfiles/
+static_cdn/
+media_cdn/
+*.log
+local_settings.py
 
-# Env
-.env
+# --- Testing & Code Quality Caches ---
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.mypy_cache/
 
-# IDE
+# --- IDEs & Editors ---
 .idea/
 .vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# --- Operating System Files ---
 .DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# --- Large Media & Video Files ---
+# These are too large for Git/GitHub and should be stored elsewhere
+*.mp4
+*.part
+*.avi
+*.mkv
+*.mov
+
+# --- Local Scripts, Temp Files & Logs ---
+# Output and history files from local executions
+git_history.txt
+pytest_test_out.txt
+run_chiquvchi.txt
+run_ichki_output.txt
+test_hello.txt
+
+# Scratch scripts (untracked developer tests)
+scratch_*.py
+scratch_*.bat
+test_whisper.py
+test_whisper_normalized.py
+test_yt.py
+check_audio.py
+extract_yt_frames.py
+get_buyruq_transcript.py
+get_yt_info.py

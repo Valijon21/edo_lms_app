@@ -1,5 +1,135 @@
 {% extends 'base.html' %}
+{% block title %}Bosh sahifa — Ijro.uz o'quv platformasi{% endblock %}
+
 {% block content %}
-<h1>Ijro.uz o'quv platformasi</h1>
-<p>Yangi xodimlar uchun interaktiv treninng tizimiga xush kelibsiz.</p>
+{% if user.is_authenticated %}
+  <!-- Tizimga kirgan foydalanuvchilar uchun Dashboard -->
+  <div class="row align-items-center mb-5 bg-primary-subtle p-5 rounded-4 border border-primary-subtle shadow-sm mx-1">
+    <div class="col-md-8 text-center text-md-start">
+      <h1 class="display-5 fw-bold text-primary mb-2">Hush kelibsiz, {{ user.username }}!</h1>
+      <p class="fs-5 text-muted mb-0">Ijro.uz interaktiv o'quv platformasidagi faoliyatingizni davom ettiring.</p>
+      <div class="mt-3">
+        <span class="badge bg-primary px-3 py-2 fw-semibold rounded-pill">Roli: {{ user.profile.get_role_display }}</span>
+      </div>
+    </div>
+    <div class="col-md-4 text-center mt-4 mt-md-0">
+      <a href="{% url 'courses:course_list' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+        Darslarni boshlash &rarr;
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-4 justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+        <div class="mb-3 text-primary">
+          <i class="bi bi-book display-4"></i>
+        </div>
+        <h3 class="fw-bold mb-2">O'quv Kurslari</h3>
+        <p class="text-muted flex-grow-1">Barcha mavjud darslar, mavzular va tizim bo'yicha ko'rsatmalarni ko'rish.</p>
+        <a href="{% url 'courses:course_list' %}" class="btn btn-outline-primary rounded-pill w-100 py-2 fw-bold">Batafsil</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
+        <div class="mb-3 text-success">
+          <i class="bi bi-person-badge display-4"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Mening Natijalarim</h3>
+        <p class="text-muted flex-grow-1">O'zlashtirgan mavzularingiz, progress bar va olingan sertifikatlarni ko'rish.</p>
+        <a href="{% url 'progress:user_dashboard' %}" class="btn btn-outline-success rounded-pill w-100 py-2 fw-bold">Ko'rish</a>
+      </div>
+    </div>
+
+    {% if user.profile.role == 'rahbar' or user.profile.role == 'nazoratchi' %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center border-warning">
+          <div class="mb-3 text-warning">
+            <i class="bi bi-shield-lock display-4"></i>
+          </div>
+          <h3 class="fw-bold mb-2 text-warning">Nazorat Paneli</h3>
+          <p class="text-muted flex-grow-1">Xodimlarning o'zlashtirish foizlari va test urinishlari statistikasini monitoring qilish.</p>
+          <a href="{% url 'progress:manager_dashboard' %}" class="btn btn-outline-warning rounded-pill w-100 py-2 fw-bold">Panelga kirish</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+{% else %}
+  <!-- Mehmonlar uchun Landing Hero -->
+  <div class="row align-items-center py-5 my-5">
+    <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
+      <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold text-uppercase fs-7 mb-3">
+        Ijro.uz interaktiv o'quv markazi
+      </span>
+      <h1 class="display-4 fw-black text-dark mb-4" style="line-height: 1.2;">
+        Yangi xodimlarni <span class="text-primary">samarali</span> tayyorlash tizimi
+      </h1>
+      <p class="fs-5 text-muted mb-5">
+        Ijro.uz (edo.ijro.uz) hujjat aylanish tizimida tez va mukammal ishlashni o'rganing. Darslar, interaktiv mavzular va test sinovlari orqali malakangizni oshiring.
+      </p>
+      <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow">
+          Ro'yxatdan o'tish
+        </a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary btn-lg rounded-pill px-5 py-3 fw-semibold">
+          Kirish
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-6 text-center">
+      <!-- Illustratsiya / Vizual mockups o'rnida premium dizayn element -->
+      <div class="p-5 bg-primary-subtle rounded-5 shadow-sm border position-relative overflow-hidden mx-auto" style="max-width: 500px; height: 380px;">
+        <div class="position-absolute top-50 start-50 translate-middle text-primary opacity-25" style="font-size: 15rem;">
+          <i class="bi bi-laptop"></i>
+        </div>
+        <div class="position-relative z-1 d-flex flex-column h-100 justify-content-center align-items-center text-center">
+          <i class="bi bi-mortarboard-fill text-primary display-1 mb-4"></i>
+          <h3 class="fw-bold text-primary mb-1">Interaktiv Darslar</h3>
+          <p class="text-muted small">Tizim bo'yicha qo'llanmalar, skrinshotlar va video ko'rsatmalar</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edo.ijro.uz haqida ma'lumot -->
+  <div class="row mt-5 pt-5 border-top border-gray-150">
+    <div class="col-12 text-center mb-5">
+      <span class="badge bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-full px-3 py-1.5 mb-2.5 fw-bold text-uppercase fs-8 tracking-wider" style="font-family: 'Outfit', sans-serif;">Platformalar</span>
+      <h2 class="display-6 fw-extrabold text-gray-900" style="font-family: 'Outfit', sans-serif;">Raqamlashtirish islohotlari</h2>
+      <p class="text-gray-500 fs-5 font-light">Edo.ijro.uz va Raqamli mahalla tizimlari haqida ma'lumot</p>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-lg rounded-3xl p-4.5 glass-card">
+        <div class="mb-3 text-emerald-600 bg-emerald-50 w-12 h-12 rounded-2xl flex align-items-center justify-content-center border border-emerald-100">
+          <i class="bi bi-houses-fill fs-4"></i>
+        </div>
+        <h4 class="fw-extrabold mb-3 text-gray-900" style="font-family: 'Outfit', sans-serif;">Raqamli mahalla platformasi</h4>
+        <p class="text-gray-500 font-light leading-relaxed mb-4 text-sm">
+          Mahalla 7 ligining tarqoq ma’lumotlarini jamlash hamda mahalla va aholi bilan bog‘liq ma'lumotlarni yagona platformada boshqarish, tahlil qilish va davlat xizmatlarini manzilli tashkil etishga xizmat qiluvchi axborot tizimidir.
+        </p>
+        <a href="{% url 'platform_info' %}" class="text-emerald-600 fw-bold text-decoration-none d-flex align-items-center gap-1.5 mt-auto text-sm hover:text-emerald-700">
+          Batafsil ma'lumot <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-lg rounded-3xl p-4.5 glass-card">
+        <div class="mb-3 text-indigo-600 bg-indigo-50 w-12 h-12 rounded-2xl flex align-items-center justify-content-center border border-indigo-100">
+          <i class="bi bi-file-earmark-pdf-fill fs-4"></i>
+        </div>
+        <h4 class="fw-extrabold mb-3 text-gray-900" style="font-family: 'Outfit', sans-serif;">Edo.ijro.uz tizimi</h4>
+        <p class="text-gray-500 font-light leading-relaxed mb-4 text-sm">
+          Davlat organlari va tashkilotlarida hujjat aylanishini to‘liq raqamlashtirish, qog‘oz hujjatlar almashinuvi va ortiqcha qog‘ozbozlikni kamaytirish, hujjatlar ijrosi ustidan doimiy monitoring va nazoratni ta’minlash axborot tizimidir.
+        </p>
+        <a href="{% url 'platform_info' %}" class="text-indigo-600 fw-bold text-decoration-none d-flex align-items-center gap-1.5 mt-auto text-sm hover:text-indigo-700">
+          Batafsil ma'lumot <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+{% endif %}
 {% endblock %}

@@ -1,0 +1,175 @@
+/* Global Premium Design Tokens & Animations — edo_app */
+
+:root {
+  --transition-speed: 0.3s;
+  --primary-accent: #4f46e5;
+  --primary-accent-hover: #4338ca;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --sidebar-active-bg: rgba(79, 70, 229, 0.08);
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+  50% { box-shadow: 0 0 15px 5px rgba(79, 70, 229, 0.2); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Base Transition Utilities */
+.transition-all-300 {
+  transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Premium Glassmorphism Card Style */
+.glass-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.02) !important;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(79, 70, 229, 0.2) !important;
+}
+
+/* Interactive list elements */
+.interactive-item {
+  transition: all 0.25s ease;
+  border-left: 4px solid transparent !important;
+}
+
+.interactive-item:hover {
+  background-color: var(--sidebar-active-bg) !important;
+  color: var(--primary-accent) !important;
+  transform: translateX(4px);
+  border-left-color: var(--primary-accent) !important;
+}
+
+.interactive-item.active {
+  background-color: var(--sidebar-active-bg) !important;
+  color: var(--primary-accent) !important;
+  font-weight: 700;
+  border-left-color: var(--primary-accent) !important;
+}
+
+/* Quiz Option Selections */
+.quiz-option-label {
+  border: 2px solid #e5e7eb !important;
+  background-color: #ffffff !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 1.15rem 1.5rem !important;
+  border-radius: 1rem !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.quiz-option-label:hover {
+  border-color: rgba(79, 70, 229, 0.3) !important;
+  background-color: #f9fafb !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+}
+
+.btn-check:checked + .quiz-option-label {
+  border-color: var(--primary-accent) !important;
+  background-color: rgba(79, 70, 229, 0.06) !important;
+  color: var(--primary-accent) !important;
+  box-shadow: 0 0 0 1px var(--primary-accent), 0 8px 20px -8px rgba(79, 70, 229, 0.3) !important;
+  font-weight: 600;
+}
+
+.custom-radio-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-check:checked + .quiz-option-label .custom-radio-circle {
+  border-color: var(--primary-accent);
+  background-color: var(--primary-accent);
+  color: #ffffff;
+}
+
+/* Rich Lesson Content */
+.lesson-rich-content .step-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
+}
+
+.lesson-rich-content .step-card:hover {
+  box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.05);
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.lesson-rich-content img {
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e5e7eb !important;
+  transition: all 0.3s ease;
+}
+
+.lesson-rich-content img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 35px -15px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Fix Tailwind and Bootstrap collapse conflict */
+.collapse:not(.show) {
+  display: none !important;
+}
+
+.collapse.show {
+  visibility: visible !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
