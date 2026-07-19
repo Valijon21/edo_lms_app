@@ -24,6 +24,8 @@ static_cdn/
 media_cdn/
 *.log
 local_settings.py
+.env
+.env.*
 
 # --- Testing & Code Quality Caches ---
 .pytest_cache/
@@ -67,7 +69,6 @@ test_hello.txt
 
 # Scratch scripts (untracked developer tests)
 scratch_*.py
-scratch_*.bat
 test_whisper.py
 test_whisper_normalized.py
 test_yt.py
@@ -75,3 +76,6 @@ check_audio.py
 extract_yt_frames.py
 get_buyruq_transcript.py
 get_yt_info.py
+
+# --- Windows Batch Files ---
+*.bat
