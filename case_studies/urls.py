@@ -8,5 +8,6 @@ router = DefaultRouter()
 router.register(r'', CaseStudyViewSet, basename='case-study')
 
 urlpatterns = [
+    path('', CaseStudyListView.as_view(), name='list'),
     path('play/', CaseStudyListView.as_view(), name='play'),
 ] + router.urls

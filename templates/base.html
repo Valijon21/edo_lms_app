@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Ijro.uz o'quv platformasi{% endblock %}</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 36' fill='none'%3E%3Cpath d='M22 2L2 34H26L20 24L16.5 29.5H11L18 19.5L23.5 28.5L25.5 25.5L20 16.5L22 2Z' fill='%230C1743'/%3E%3Cpath d='M24.5 2L35 19L38.5 25C39.5 27 39 29 37 31H32L30.5 28L27.5 23L20 10.5L24.5 2Z' fill='%23EF231C'/%3E%3Ccircle cx='12.5' cy='18' r='3.5' fill='%23EF231C'/%3E%3C/svg%3E">
   <meta name="description" content="Yangi ishga kirgan xodimlarga Ijro.uz (edo.ijro.uz) tizimida ishlashni o'rgatuvchi interaktiv o'quv platformasi.">
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -93,14 +95,35 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-1">
         {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-lg py-2 transition-all" href="{% url 'courses:course_list' %}">Kurslar</a>
+            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-lg py-2 transition-all" href="{% url 'courses:course_list' %}">
+              <i class="bi bi-book"></i> Kurslar
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-lg py-2 transition-all" href="{% url 'progress:user_dashboard' %}">Mening progressim</a>
+            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-lg py-2 transition-all" href="{% url 'progress:user_dashboard' %}">
+              <i class="bi bi-graph-up"></i> Progressim
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-emerald-600 hover:bg-emerald-50/50 rounded-lg py-2 transition-all" href="{% url 'case_studies:list' %}">
+              <i class="bi bi-puzzle"></i> Keyslar
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-purple-600 hover:bg-purple-50/50 rounded-lg py-2 transition-all" href="{% url 'gamification:profile' %}">
+              <i class="bi bi-trophy"></i> Gamifikatsiya
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-blue-600 hover:bg-blue-50/50 rounded-lg py-2 transition-all" href="{% url 'simulator:list' %}">
+              <i class="bi bi-box"></i> Simulyator
+            </a>
           </li>
         {% endif %}
         <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-lg py-2 transition-all" href="{% url 'platform_info' %}">Platformalar</a>
+          <a class="nav-link fw-semibold px-3 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50/50 rounded-lg py-2 transition-all" href="{% url 'platform_info' %}">
+            <i class="bi bi-info-circle"></i> Platformalar
+          </a>
         </li>
         {% if user.is_authenticated %}
           {% if user.profile.role == 'rahbar' or user.profile.role == 'nazoratchi' %}
