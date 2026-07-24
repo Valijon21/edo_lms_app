@@ -34,6 +34,9 @@ class CaseStudyPlayView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         case = self.get_object()
 
+        # Get all cases for the left sidebar
+        context['cases'] = CaseStudy.objects.filter(is_active=True)
+
         # Get or create user progress
         progress, created = UserCaseProgress.objects.get_or_create(
             user=self.request.user,
