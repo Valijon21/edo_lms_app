@@ -26,6 +26,7 @@ media_cdn/
 local_settings.py
 .env
 .env.*
+.env.example
 
 # --- Testing & Code Quality Caches ---
 .pytest_cache/
@@ -88,11 +89,16 @@ sandbox-clone.md
 simulator-plan.md
 *-plan.md
 kelajak.md
+gamification-cases.md
 
 # --- Graphify ---
 graphify-out/
 
-# --- Kiro Specs (keep these in git) ---
-!.kiro/
-!.kiro/**/*.md
-!.kiro/**/*.json
+# --- AI Assistant Files (Private/Local Only) ---
+# Kiro specs and agent configurations should NOT be in git
+.kiro/
+.agents/
+
+# --- Database Files ---
+db.sqlite3
+db.sqlite3-journal
