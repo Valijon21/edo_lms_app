@@ -95,7 +95,7 @@
       </div>
     `;
 
-    fetch(`/api/cases/${caseId}/start/`, {
+    fetch(`/case-studies/api/${caseId}/start/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -190,7 +190,7 @@
     const buttons = board.querySelectorAll('button');
     buttons.forEach(btn => btn.disabled = true);
 
-    fetch(`/api/cases/${activeCaseId}/choose/`, {
+    fetch(`/case-studies/api/${activeCaseId}/choose/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
