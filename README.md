@@ -216,8 +216,10 @@ python manage.py runserver
 - 🏠 Bosh sahifa: http://127.0.0.1:8000/
 - 🔐 Admin panel: http://127.0.0.1:8000/admin/
 - ℹ️ Platform info: http://127.0.0.1:8000/info/
-- 🎮 Gamification: http://127.0.0.1:8000/gamification/
-- 📝 Case studies: http://127.0.0.1:8000/case-studies/
+- 📚 Courses: http://127.0.0.1:8000/courses/
+- 🎮 Gamification API: http://127.0.0.1:8000/gamification/profile/
+- 📝 Case Studies API: http://127.0.0.1:8000/case-studies/list/
+- 🎯 Simulator: http://127.0.0.1:8000/simulator/
 
 ---
 
