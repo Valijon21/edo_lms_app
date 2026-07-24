@@ -59,23 +59,40 @@ desktop.ini
 *.mkv
 *.mov
 
-# --- Local Scripts, Temp Files & Logs ---
-# Output and history files from local executions
-git_history.txt
-pytest_test_out.txt
-run_chiquvchi.txt
-run_ichki_output.txt
-test_hello.txt
+# --- Local Logs & Output Files ---
+logs/
+*.log
 
-# Scratch scripts (untracked developer tests)
+# --- Temporary & Scratch Files ---
+# Developer scratch/test files
 scratch_*.py
-test_whisper.py
-test_whisper_normalized.py
-test_yt.py
-check_audio.py
-extract_yt_frames.py
-get_buyruq_transcript.py
-get_yt_info.py
+scratch_*.bat
+check_*.py
+test_whisper*.py
+extract_*.py
+get_*.py
+make_*_admin.py
 
-# --- Windows Batch Files ---
-*.bat
+# Command outputs
+*_out.txt
+*_output.txt
+output_*.txt
+test_results.txt
+tracked_output.txt
+git_history.txt
+
+# Temporary planning docs (use .kiro/specs instead)
+implementation_plan*.md
+project_status.md
+sandbox-clone.md
+simulator-plan.md
+*-plan.md
+kelajak.md
+
+# --- Graphify ---
+graphify-out/
+
+# --- Kiro Specs (keep these in git) ---
+!.kiro/
+!.kiro/**/*.md
+!.kiro/**/*.json

@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% block title %}Edo.ijro.uz — Ish stoli{% endblock %}
+
+{% block content %}
+<!-- Google Fonts & Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* Base Overrides for 1:1 Edo.ijro.uz List Clone */
+  #main-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    min-height: calc(100vh - 72px);
+    background-color: #f1f5f9;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f1f5f9;
+  }
+  .mono-font {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  
+  /* Topbar Styling */
+  .edo-topbar {
+    height: 64px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  }
+  .edo-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    color: #0F172A;
+  }
+  
+  /* Sidebar Styling */
+  .edo-sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    min-height: calc(100vh - 64px);
+    width: 260px;
+    transition: all 0.3s;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+  }
+  .sidebar-link:hover {
+    background-color: #f8fafc;
+    color: #4f46e5;
+  }
+  .sidebar-link.active {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border-left-color: #4f46e5;
+    font-weight: 600;
+  }
+  .sidebar-link .material-icons {
+    font-size: 20px;
+    color: #64748b;
+  }
+  .sidebar-link.active .material-icons {
+    color: #4f46e5;
+  }
+</style>
+
+<!-- EDO.IJRO.UZ WORKSPACE CONTAINER -->
+<div class="d-flex flex-column min-vh-100">
+  
+  <!-- 1. TOPBAR -->
+  <div class="edo-topbar d-flex align-items-center justify-content-between px-4">
+    <div class="d-flex align-items-center gap-3">
+      <svg width="30" height="28" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 2L2 34H26L20 24L16.5 29.5H11L18 19.5L23.5 28.5L25.5 25.5L20 16.5L22 2Z" fill="#0C1743"/>
+        <path d="M24.5 2L35 19L38.5 25C39.5 27 39 29 37 31H32L30.5 28L27.5 23L20 10.5L24.5 2Z" fill="#EF231C"/>
+      </svg>
+      <span class="edo-logo-text">EDO.IJRO.UZ <span class="text-xs text-gray-400 fw-normal">идоралараро тизим</span></span>
+      
+      <!-- Search Bar -->
+      <div class="d-none d-md-flex align-items-center bg-gray-100 rounded-full px-3 py-1.5 border border-gray-200/60 ms-4" style="width: 280px;">
+        <span class="material-icons text-gray-400 fs-5 me-2">search</span>
+        <input type="text" placeholder="Hujjatlar bo'yicha qidiruv..." class="bg-transparent border-0 outline-none w-100 text-xs text-gray-700">
+      </div>
+    </div>
+    
+    <!-- User Info & Date -->
+    <div class="d-flex align-items-center gap-3">
+      <div class="text-xs text-gray-500 font-semibold mono-font d-none d-lg-block">
+        2026-07-22 16:15:28
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-xs d-flex align-items-center justify-content-center">
+          U
+        </span>
+        <span class="text-xs fw-bold text-gray-700 d-none d-md-block">{{ user.username }} (Devonxona)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SIDEBAR AND MAIN BODY -->
+  <div class="d-flex flex-grow-1">
+    <!-- SIDEBAR -->
+    <div class="edo-sidebar d-flex flex-column">
+      <div class="px-4 py-3 border-bottom border-gray-100 text-xs fw-bold text-gray-400 uppercase tracking-widest">
+        Menyular paneli
+      </div>
+      
+      <div class="flex-grow-1">
+        <a href="#" class="sidebar-link active">
+          <span class="material-icons">grid_view</span>
+          <span>Ish stoli (Dashboard)</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="material-icons">folder</span>
+          <span>Devonxona</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="material-icons">inbox</span>
+          <span>Kiruvchi hujjatlar</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="material-icons">outbox</span>
+          <span>Chiquvchi xatlar</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="material-icons">description</span>
+          <span>Ichki buyruqlar</span>
+        </a>
+        <a href="#" class="sidebar-link">
+          <span class="material-icons">assignment_turned_in</span>
+          <span>Nazorat bo'limi</span>
+        </a>
+      </div>
+      
+      <div class="p-3 border-top border-gray-100">
+        <div class="bg-gray-50 border border-gray-200/50 rounded-xl p-3 text-center text-xs text-gray-500 font-medium leading-relaxed">
+          Edo Sandbox v1.0.0
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    <div class="flex-grow-1 p-4">
+      
+      <!-- Welcome Header -->
+      <div class="bg-white rounded-2xl border border-gray-200/60 shadow-sm p-4 mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 animate__animated animate__fadeIn">
+        <div>
+          <h1 class="h5 fw-extrabold text-gray-900 mb-1" style="font-family: 'Outfit', sans-serif;">
+            Xush kelibsiz, {{ user.username }}!
+          </h1>
+          <p class="text-xs text-gray-500 mb-0 font-medium">Virtual simulyatordagi amaliy topshiriqlarni tanlang va ijroga kirishing.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2 bg-indigo-50 border border-indigo-100 rounded-2xl px-4 py-2">
+          <span class="material-icons text-indigo-600">military_tech</span>
+          <div class="text-xs">
+            <span class="text-gray-400 block">Jami XP:</span>
+            <span class="fw-extrabold text-indigo-900 text-sm mono-font">{{ user.gamification_profile.total_xp|default:0 }} XP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats Grid -->
+      <div class="row g-3 mb-4 animate__animated animate__fadeIn">
+        <div class="col-6 col-lg-3">
+          <div class="bg-white rounded-2xl border border-gray-200/60 shadow-sm p-3.5 d-flex align-items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 d-flex align-items-center justify-content-center">
+              <span class="material-icons">folder_open</span>
+            </div>
+            <div>
+              <span class="text-2xs text-gray-400 block font-semibold uppercase tracking-wider">Jami topshiriqlar</span>
+              <span class="h6 mb-0 fw-bold text-gray-900 mono-font">{{ scenarios_data|length }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="bg-white rounded-2xl border border-gray-200/60 shadow-sm p-3.5 d-flex align-items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 d-flex align-items-center justify-content-center">
+              <span class="material-icons">pending_actions</span>
+            </div>
+            <div>
+              <span class="text-2xs text-gray-400 block font-semibold uppercase tracking-wider">Jarayonda</span>
+              <span class="h6 mb-0 fw-bold text-gray-900 mono-font">
+                {% regroup scenarios_data by session as session_list %}
+                {% if session_list.0.grouper %}0{% else %}1{% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="bg-white rounded-2xl border border-gray-200/60 shadow-sm p-3.5 d-flex align-items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 d-flex align-items-center justify-content-center">
+              <span class="material-icons">task_alt</span>
+            </div>
+            <div>
+              <span class="text-2xs text-gray-400 block font-semibold uppercase tracking-wider">Tugatilganlar</span>
+              <span class="h6 mb-0 fw-bold text-gray-900 mono-font">
+                {% if user.gamification_profile.total_xp %}{{ user.gamification_profile.total_xp|divisibleby:100 }}{% else %}0{% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="bg-white rounded-2xl border border-gray-200/60 shadow-sm p-3.5 d-flex align-items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 d-flex align-items-center justify-content-center">
+              <span class="material-icons">bolt</span>
+            </div>
+            <div>
+              <span class="text-2xs text-gray-400 block font-semibold uppercase tracking-wider">Kunlik Streak</span>
+              <span class="h6 mb-0 fw-bold text-gray-900 mono-font">{{ user.gamification_profile.current_streak|default:0 }} kun</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenarios Table -->
+      <div class="bg-white rounded-2xl border border-gray-200/60 shadow-sm p-4 animate__animated animate__fadeIn">
+        <div class="d-flex align-items-center gap-2 border-bottom border-gray-100 pb-3 mb-3.5">
+          <span class="material-icons text-indigo-600">assignment</span>
+          <h3 class="h6 mb-0 fw-bold text-gray-800 uppercase tracking-wider">Ijrodagi virtual topshiriqlar</h3>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+            <thead class="bg-gray-50 text-gray-500 fw-bold uppercase tracking-wider text-xs border-bottom border-gray-100">
+              <tr>
+                <th class="py-3 border-0">№</th>
+                <th class="py-3 border-0">Topshiriq nomi / Hujjat turi</th>
+                <th class="py-3 border-0">Murakkablik</th>
+                <th class="py-3 border-0">Mukofot XP</th>
+                <th class="py-3 border-0">Bajarilish holati</th>
+                <th class="py-3 border-0 text-center">Harakat</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-700 font-medium">
+              {% for item in scenarios_data %}
+                <tr>
+                  <td class="py-3.5 border-bottom border-gray-100">{{ forloop.counter }}</td>
+                  <td class="py-3.5 border-bottom border-gray-100">
+                    <span class="text-gray-900 fw-bold block text-sm mb-1">{{ item.scenario.title }}</span>
+                    {% if item.scenario.doc_type == 'KIRUVCHI' %}
+                      <span class="badge bg-blue-50 text-blue-700 border border-blue-200 rounded-md text-3xs font-bold">KIRUVCHI HUJJAT</span>
+                    {% elif item.scenario.doc_type == 'CHIQUVCHI' %}
+                      <span class="badge bg-purple-50 text-purple-700 border border-purple-200 rounded-md text-3xs font-bold">CHIQUVCHI XAT</span>
+                    {% else %}
+                      <span class="badge bg-amber-50 text-amber-700 border border-amber-200 rounded-md text-3xs font-bold">ICHKI BUYRUQ</span>
+                    {% endif %}
+                  </td>
+                  <td class="py-3.5 border-bottom border-gray-100">
+                    {% if item.scenario.difficulty == 'EASY' %}
+                      <span class="text-xs text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded">Oson</span>
+                    {% elif item.scenario.difficulty == 'MEDIUM' %}
+                      <span class="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded">O'rta</span>
+                    {% else %}
+                      <span class="text-xs text-rose-600 bg-rose-50 border border-rose-100 px-2 py-0.5 rounded">Murakkab</span>
+                    {% endif %}
+                  </td>
+                  <td class="py-3.5 border-bottom border-gray-100 text-indigo-700 fw-bold font-mono">+{{ item.scenario.xp_reward }} XP</td>
+                  <td class="py-3.5 border-bottom border-gray-100">
+                    {% if item.session %}
+                      {% if item.is_completed %}
+                        <div class="d-flex align-items-center gap-2 text-emerald-600 font-semibold">
+                          <span class="material-icons fs-6">check_circle</span>
+                          <span>Bajarilgan (100%)</span>
+                        </div>
+                      {% else %}
+                        {% widthratio item.current_step item.total_steps 100 as progress_percent %}
+                        <div class="d-flex align-items-center gap-2 text-indigo-600 font-semibold">
+                          <span class="material-icons fs-6 animate-pulse">pending</span>
+                          <span>Bajarilmoqda ({{ progress_percent }}%)</span>
+                        </div>
+                      {% endif %}
+                    {% else %}
+                      <div class="d-flex align-items-center gap-2 text-gray-400">
+                        <span class="material-icons fs-6">radio_button_unchecked</span>
+                        <span>Boshlanmagan</span>
+                      </div>
+                    {% endif %}
+                  </td>
+                  <td class="py-3.5 border-bottom border-gray-100 text-center">
+                    {% if item.session %}
+                      {% if item.is_completed %}
+                        <div class="d-flex justify-content-center gap-2">
+                          <a href="{% url 'simulator:detail' item.scenario.id %}" class="btn btn-sm btn-light border rounded-xl py-1.5 px-3 fw-bold text-gray-700">
+                            Ko'rish
+                          </a>
+                          <form action="{% url 'simulator:reset' item.scenario.id %}" method="post" class="m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-xl py-1.5 px-2" title="Qayta boshlash">
+                              <span class="material-icons fs-6 align-middle">replay</span>
+                            </button>
+                          </form>
+                        </div>
+                      {% else %}
+                        <a href="{% url 'simulator:detail' item.scenario.id %}" class="btn btn-sm btn-indigo bg-indigo-600 text-white rounded-xl py-1.5 px-4 fw-bold shadow-sm">
+                          Davom ettirish
+                        </a>
+                      {% endif %}
+                    {% else %}
+                      <a href="{% url 'simulator:detail' item.scenario.id %}" class="btn btn-sm btn-indigo bg-indigo-600 text-white rounded-xl py-1.5 px-4 fw-bold shadow-sm">
+                        Ijroga olish
+                      </a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center py-5 text-gray-400">
+                    <span class="material-icons display-3 block mb-2">work_off</span>
+                    Faol topshiriqlar topilmadi.
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

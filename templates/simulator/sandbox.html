@@ -1,0 +1,1129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Edo.ijro.uz — {{ scenario.title }}{% endblock %}
+
+{% block content %}
+<!-- Google Fonts & Material Icons for 1:1 Identity -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* Base Overrides for 1:1 Edo.ijro.uz Clone */
+  #main-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    min-height: calc(100vh - 72px);
+    background-color: #f1f5f9;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f1f5f9;
+  }
+  .mono-font {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  
+  /* Topbar Styling */
+  .edo-topbar {
+    height: 64px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  }
+  .edo-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    color: #0F172A;
+  }
+  
+  /* Sidebar Styling */
+  .edo-sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    min-height: calc(100vh - 64px);
+    width: 260px;
+    transition: all 0.3s;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+  }
+  .sidebar-link:hover {
+    background-color: #f8fafc;
+    color: #4f46e5;
+  }
+  .sidebar-link.active {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border-left-color: #4f46e5;
+    font-weight: 600;
+  }
+  .sidebar-link .material-icons {
+    font-size: 20px;
+    color: #64748b;
+  }
+  .sidebar-link.active .material-icons {
+    color: #4f46e5;
+  }
+
+  /* Document layout */
+  .a4-page {
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1 / 1.414;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid #cbd5e1;
+    padding: 40px;
+    font-family: 'Times New Roman', Times, serif;
+    position: relative;
+    color: #000000;
+    user-select: none;
+  }
+
+  /* Stamp Styling */
+  .draggable-stamp {
+    position: absolute;
+    width: 180px;
+    padding: 8px;
+    border: 3px double #1d4ed8;
+    color: #1d4ed8;
+    background-color: rgba(255, 255, 255, 0.95);
+    font-family: 'Times New Roman', serif;
+    font-size: 9px;
+    line-height: 1.2;
+    text-align: center;
+    cursor: move;
+    z-index: 100;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    user-select: none;
+    border-radius: 4px;
+  }
+
+  /* ERI Signature Box */
+  .eri-signature-box {
+    border: 2px solid #059669;
+    background-color: rgba(240, 253, 250, 0.95);
+    color: #047857;
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    line-height: 1.3;
+    max-width: 260px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Word Editor Simulation */
+  .word-editor-toolbar {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-bottom: 0;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .word-editor-btn {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #475569;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .word-editor-btn:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+  }
+  .word-editor-body {
+    border: 1px solid #cbd5e1;
+    background-color: #ffffff;
+    min-height: 350px;
+    padding: 24px;
+    outline: none;
+  }
+
+  /* Floating Mentor Widget */
+  .mentor-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #4f46e5, #3730a3);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+    cursor: pointer;
+    z-index: 1000;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.2s;
+  }
+  .mentor-fab:hover {
+    transform: scale(1.05);
+  }
+  .mentor-panel {
+    position: fixed;
+    bottom: 92px;
+    right: 24px;
+    width: 340px;
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 999;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: none;
+  }
+</style>
+
+<!-- CSRF Token -->
+<input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+
+<!-- EDO.IJRO.UZ WORKSPACE CONTAINER -->
+<div class="d-flex flex-column min-vh-100">
+  
+  <!-- 1. TOPBAR -->
+  <div class="edo-topbar d-flex align-items-center justify-content-between px-4">
+    <div class="d-flex align-items-center gap-3">
+      <svg width="30" height="28" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 2L2 34H26L20 24L16.5 29.5H11L18 19.5L23.5 28.5L25.5 25.5L20 16.5L22 2Z" fill="#0C1743"/>
+        <path d="M24.5 2L35 19L38.5 25C39.5 27 39 29 37 31H32L30.5 28L27.5 23L20 10.5L24.5 2Z" fill="#EF231C"/>
+      </svg>
+      <span class="edo-logo-text">EDO.IJRO.UZ <span class="text-xs text-gray-400 fw-normal">идоралараро тизим</span></span>
+      
+      <!-- Search Bar -->
+      <div class="d-none d-md-flex align-items-center bg-gray-100 rounded-full px-3 py-1.5 border border-gray-200/60 ms-4" style="width: 280px;">
+        <span class="material-icons text-gray-400 fs-5 me-2">search</span>
+        <input type="text" placeholder="Hujjatlar bo'yicha qidiruv..." class="bg-transparent border-0 outline-none w-100 text-xs text-gray-700">
+      </div>
+    </div>
+    
+    <!-- User Info & Time -->
+    <div class="d-flex align-items-center gap-3">
+      <div class="text-xs text-gray-500 font-semibold mono-font d-none d-lg-block" id="current-system-clock">
+        2026-07-22 16:15:28
+      </div>
+      <span class="badge bg-indigo-50 border border-indigo-200 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-semibold">
+        ID: 4569
+      </span>
+      <div class="d-flex align-items-center gap-2">
+        <span class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-xs d-flex align-items-center justify-content-center">
+          U
+        </span>
+        <span class="text-xs fw-bold text-gray-700 d-none d-md-block">{{ user.username }} (Devonxona)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. SIDEBAR AND MAIN BODY -->
+  <div class="d-flex flex-grow-1">
+    <!-- SIDEBAR -->
+    <div class="edo-sidebar d-flex flex-column">
+      <div class="px-4 py-3 border-bottom border-gray-100 text-xs fw-bold text-gray-400 uppercase tracking-widest">
+        Menyular paneli
+      </div>
+      
+      <div class="flex-grow-1">
+        <a href="#" class="sidebar-link active" id="menu-devonxona">
+          <span class="material-icons">folder</span>
+          <span>Devonxona</span>
+        </a>
+        <a href="#" class="sidebar-link" id="menu-kiruvchi">
+          <span class="material-icons">inbox</span>
+          <span>Kiruvchi hujjatlar</span>
+        </a>
+        <a href="#" class="sidebar-link" id="menu-chiquvchi">
+          <span class="material-icons">outbox</span>
+          <span>Chiquvchi xatlar</span>
+        </a>
+        <a href="#" class="sidebar-link" id="menu-ichki">
+          <span class="material-icons">description</span>
+          <span>Ichki buyruqlar</span>
+        </a>
+        <a href="#" class="sidebar-link" id="menu-nazorat">
+          <span class="material-icons">assignment_turned_in</span>
+          <span>Nazorat bo'limi</span>
+        </a>
+      </div>
+      
+      <div class="p-3 border-top border-gray-100">
+        <div class="bg-gray-50 border border-gray-200/50 rounded-xl p-3 text-center text-xs text-gray-500 font-medium leading-relaxed">
+          Edo Sandbox v1.0.0
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN SIMULATION SPACE -->
+    <div class="flex-grow-1 p-4" id="main-sandbox-view">
+      <!-- SPA views will load here via JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- 3. FLOATING MENTOR SYSTEM -->
+<div class="mentor-fab" id="btn-mentor-fab" title="Mentor yordami">
+  <span class="material-icons">support_agent</span>
+</div>
+
+<div class="mentor-panel" id="mentor-panel">
+  <!-- Header -->
+  <div class="p-3 d-flex align-items-center justify-content-between border-bottom border-white/10" style="background-color: #0f172a;">
+    <div class="d-flex align-items-center gap-2">
+      <span class="material-icons text-indigo-400">psychology</span>
+      <span class="fw-bold text-sm">Virtual Mentor Asistent</span>
+    </div>
+    <button class="bg-transparent border-0 text-gray-400 hover:text-white" id="btn-close-mentor">
+      <span class="material-icons fs-5">close</span>
+    </button>
+  </div>
+  <!-- Body -->
+  <div class="p-3.5">
+    <div class="bg-white/5 border border-white/10 rounded-xl p-3 mb-3">
+      <span class="text-indigo-400 text-xs fw-bold uppercase tracking-wider block mb-1" id="mentor-step-label">
+        1-Qadam
+      </span>
+      <p class="text-xs leading-relaxed text-gray-200 mb-0 font-medium" id="mentor-instruction-text">
+        Kelgan hujjatlarni ko'rish va ro'yxatga olish jarayonini boshlash uchun "Devonxona" ro'yxatidan hujjat ustiga bosing.
+      </p>
+    </div>
+
+    <!-- Help Box -->
+    <div class="d-flex align-items-start gap-2 bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-2.5 mb-3" id="mentor-hint-container">
+      <span class="material-icons text-amber-300 fs-5">lightbulb</span>
+      <div class="text-xs text-indigo-200 leading-normal" id="mentor-hint-text">
+        Ro'yxatdagi xatning "Harakat" ustunidagi ko'k tugmaga bosing.
+      </div>
+    </div>
+
+    <!-- Checklist -->
+    <div>
+      <span class="text-xs fw-bold uppercase tracking-wider text-indigo-400 block mb-2">Qadamlar ro'yxati</span>
+      <ul class="list-unstyled mb-0 d-flex flex-column gap-2" id="steps-checklist">
+        <!-- Checklist items populated via JS -->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Congrats Success Modal -->
+<div class="modal fade" id="congratsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="congratsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-3xl bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 text-white text-center p-4">
+      <div class="modal-body">
+        <div class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full d-flex align-items-center justify-content-center mx-auto mb-4 animate__animated animate__zoomIn">
+          <i class="bi bi-trophy-fill text-emerald-400 display-4"></i>
+        </div>
+        <h3 class="fw-extrabold text-white mb-2" style="font-family: 'Outfit', sans-serif;">Mashq Yakunlandi!</h3>
+        <p class="text-indigo-200 leading-relaxed mb-4">Siz topshiriqni 1:1 tizim ko'rinishida muvaffaqiyatli bajardingiz.</p>
+        
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-4">
+          <span class="text-indigo-300 text-xs fw-bold uppercase tracking-wider block mb-1">Qo'lga kiritilgan tajriba</span>
+          <span class="display-6 fw-extrabold text-emerald-400">+{{ scenario.xp_reward }} XP</span>
+        </div>
+        
+        <a href="{% url 'simulator:list' %}" class="btn btn-emerald bg-emerald-500 hover:bg-emerald-600 text-white w-100 rounded-full py-2.5 fw-bold shadow-md">
+          Mashqlar ro'yxatiga qaytish
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Simulation Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const scenarioId = {{ scenario.id }};
+    const steps = {{ steps_json|safe }};
+    const initialDocData = {{ initial_doc_json|safe }};
+    let currentStepIndex = {{ session.current_step_index }};
+    const docType = "{{ scenario.doc_type }}";
+    const csrfToken = document.getElementById("csrf-token").value;
+
+    // Elements
+    const mainSandboxView = document.getElementById("main-sandbox-view");
+    const mentorFab = document.getElementById("btn-mentor-fab");
+    const mentorPanel = document.getElementById("mentor-panel");
+    const closeMentorBtn = document.getElementById("btn-close-mentor");
+    const mentorStepLabel = document.getElementById("mentor-step-label");
+    const mentorInstructionText = document.getElementById("mentor-instruction-text");
+    const mentorHintText = document.getElementById("mentor-hint-text");
+    const stepsChecklist = document.getElementById("steps-checklist");
+
+    // Local state for forms
+    let sessionState = {
+      isRegistered: currentStepIndex >= 2,
+      isStampPlaced: currentStepIndex >= 3,
+      stampPosition: { x: 40, y: 40 },
+      isWordDocSaved: currentStepIndex >= 1,
+      isFileAttached: currentStepIndex >= 2,
+      isResolutionSaved: currentStepIndex >= 2,
+      
+      // Payloads
+      resolution: { executor: "", text: "", deadline: "" },
+      draft: { doc_title: "", doc_body: "" },
+      order: { order_title: "", order_content: "" },
+      controller: { controller_name: "", deadline: "" }
+    };
+
+    // System Clock Update
+    function updateClock() {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const clockStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      const el = document.getElementById("current-system-clock");
+      if (el) el.textContent = clockStr;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Toggle Mentor Panel
+    mentorFab.addEventListener("click", () => {
+      mentorPanel.style.display = mentorPanel.style.display === "block" ? "none" : "block";
+    });
+    closeMentorBtn.addEventListener("click", () => {
+      mentorPanel.style.display = "none";
+    });
+    // Open mentor panel by default to assist
+    mentorPanel.style.display = "block";
+
+    // Update Mentor Instructions
+    function updateMentor() {
+      if (currentStepIndex >= steps.length) {
+        mentorStepLabel.textContent = "Yakunlandi";
+        mentorInstructionText.textContent = "Ssenariy muvaffaqiyatli yakunlandi! Mukofotni olishingiz mumkin.";
+        mentorHintText.textContent = "Rahmat! Mashq muvaffaqiyatli o'tildi.";
+        return;
+      }
+      const activeStep = steps[currentStepIndex];
+      mentorStepLabel.textContent = `${currentStepIndex + 1}-Bosqich: ${activeStep.title}`;
+      mentorInstructionText.textContent = activeStep.description;
+      mentorHintText.textContent = activeStep.error_hint || "Yo'riqnomaga rioya qiling.";
+    }
+
+    // Render Checklist
+    function renderChecklist() {
+      stepsChecklist.innerHTML = "";
+      steps.forEach((step, idx) => {
+        let icon = "radio_button_unchecked";
+        let style = "opacity-40";
+        if (idx < currentStepIndex) {
+          icon = "check_circle";
+          style = "text-emerald-400 font-semibold line-through opacity-70";
+        } else if (idx === currentStepIndex) {
+          icon = "play_circle_filled";
+          style = "text-indigo-400 font-bold";
+        }
+        stepsChecklist.innerHTML += `
+          <li class="d-flex align-items-center gap-2 text-xs py-1 ${style}">
+            <span class="material-icons fs-6">${icon}</span>
+            <span>${step.title}</span>
+          </li>
+        `;
+      });
+    }
+
+    // ROUTER AND VIEWS
+    function renderRouter() {
+      updateMentor();
+      renderChecklist();
+      
+      // Determine what to display in main viewport based on scenario & step
+      if (docType === "KIRUVCHI") {
+        renderKiruvchiWorkflow();
+      } else if (docType === "CHIQUVCHI") {
+        renderChiquvchiWorkflow();
+      } else if (docType === "ICHKI_BUYRUQ") {
+        renderIchkiWorkflow();
+      }
+    }
+
+    // 📥 SCENARIO 1: KIRUVCHI WORKFLOW
+    function renderKiruvchiWorkflow() {
+      // Step 0: Devonxona List View (devonxona/incoming-task-list)
+      if (currentStepIndex === 0) {
+        mainSandboxView.innerHTML = `
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 animate__animated animate__fadeIn">
+            <div class="d-flex align-items-center justify-content-between border-bottom border-gray-100 pb-3 mb-4">
+              <div class="d-flex align-items-center gap-2">
+                <span class="material-icons text-indigo-600">view_list</span>
+                <h3 class="h6 mb-0 fw-bold text-gray-800 uppercase tracking-wider">Devonxona — Kiruvchi topshiriqlar ro'yxati</h3>
+              </div>
+              <span class="badge bg-blue-100 text-blue-800 font-bold text-xs py-1.5 px-3 rounded-full">
+                1 ta yangi hujjat
+              </span>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0" style="font-size: 0.85rem;">
+                <thead class="bg-gray-50 text-gray-500 fw-bold uppercase tracking-wider text-xs">
+                  <tr>
+                    <th class="py-3 border-0">№</th>
+                    <th class="py-3 border-0">Hujjat raqami / Sana</th>
+                    <th class="py-3 border-0">Jo'natuvchi idora</th>
+                    <th class="py-3 border-0">Qisqacha mazmuni</th>
+                    <th class="py-3 border-0 text-center">Harakat</th>
+                  </tr>
+                </thead>
+                <tbody class="text-gray-700 font-medium">
+                  <tr class="cursor-pointer" id="incoming-row-1">
+                    <td class="py-3.5 border-bottom border-gray-100">1</td>
+                    <td class="py-3.5 border-bottom border-gray-100">
+                      <span class="badge bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold px-2.5 py-1.5 rounded-lg mono-font">
+                        ${initialDocData.doc_number}
+                      </span>
+                      <div class="text-xs text-gray-400 mt-1">${initialDocData.doc_date}</div>
+                    </td>
+                    <td class="py-3.5 border-bottom border-gray-100 fw-bold text-gray-900">${initialDocData.sender}</td>
+                    <td class="py-3.5 border-bottom border-gray-100 text-gray-500">${initialDocData.subject.substring(0, 50)}...</td>
+                    <td class="py-3.5 border-bottom border-gray-100 text-center">
+                      <button class="btn btn-indigo bg-indigo-600 text-white rounded-xl px-3 py-2 text-xs font-bold shadow-sm d-flex align-items-center gap-1 mx-auto hover:bg-indigo-700">
+                        <span class="material-icons fs-6">assignment</span> Ro'yxatga olish
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById("incoming-row-1").addEventListener("click", function() {
+          submitAction("open_doc", {});
+        });
+        return;
+      }
+
+      // Step 1+: Details and Form view
+      mainSandboxView.innerHTML = `
+        <div class="row g-4 animate__animated animate__fadeIn">
+          <!-- A4 Document Panel -->
+          <div class="col-lg-6.5 d-flex flex-column align-items-center">
+            <div class="a4-page relative" id="a4-doc-view">
+              
+              <!-- Draggable Registry Stamp (renders after registration details) -->
+              ${currentStepIndex >= 2 ? `
+                <div class="draggable-stamp" id="registry-stamp-element">
+                  <div class="fw-bold uppercase" style="border-bottom: 1.5px solid #1d4ed8; padding-bottom: 2px; margin-bottom: 2px;">
+                    UNICON SOFT MCHJ
+                  </div>
+                  <strong>KIRUVCHI №:</strong> ${initialDocData.doc_number}<br>
+                  <strong>SANA:</strong> ${initialDocData.doc_date}<br>
+                  <span class="text-2xs font-bold" style="font-size: 7px;">EDO.IJRO.UZ DIGITAL STAMP</span>
+                </div>
+              ` : ''}
+
+              <!-- Real Letter Template View -->
+              <div class="text-center pb-4 mb-4 border-bottom border-dark/30">
+                <h3 class="fw-bold tracking-wide text-uppercase" style="font-size: 1.35rem; margin-bottom: 4px; font-family: 'Times New Roman';">
+                  ${initialDocData.sender}
+                </h3>
+                <span class="text-xs italic" style="font-family: 'Times New Roman';">Manzil: Toshkent sh., 100084 | Tel: +998 71 200-00-11</span>
+              </div>
+              
+              <div class="d-flex justify-content-between text-sm mb-5 font-bold">
+                <span>Raqam: ${initialDocData.doc_number}</span>
+                <span>Sana: ${initialDocData.doc_date}</span>
+              </div>
+              
+              <div class="text-justify text-md leading-relaxed text-dark font-light" style="text-indent: 40px; font-size: 1.05rem;">
+                <p class="mb-4">
+                  Sizga ma'lum qilamizki, O'zbekiston Respublikasi Prezidentining tegishli qarorlariga asosan, oliy ta'lim tizimida o'quv dasturlariga sun'iy intellekt (SI) va zamonaviy raqamli texnologiyalar modullarini kiritish bo'yicha keng ko'lamli ishlar rejalashtirilgan.
+                </p>
+                <p class="mb-5">
+                  Ushbu qaror ijrosini ta'minlash maqsadida, 2026/2027 o'quv yili uchun o'quv rejalariga zarur o'zgartirishlar kiritish bo'yicha o'quv bo'limining takliflarini tayyorlashingizni hamda hisobotni tizim orqali jo'natishingizni so'raymiz.
+                </p>
+              </div>
+              
+              <div class="d-flex justify-content-between align-items-center mt-5 pt-4">
+                <span class="italic text-sm text-gray-500">Raqamli texnologiyalar vazirligi</span>
+                <span class="fw-bold" style="font-family: 'Times New Roman';">${initialDocData.signer}</span>
+              </div>
+
+              <!-- Resolution Section (shows after final steps) -->
+              ${currentStepIndex >= 3 ? `
+                <div class="mt-5 border border-indigo-200 rounded-xl p-3 bg-indigo-50/20 text-xs max-w-xs animate__animated animate__fadeIn">
+                  <div class="font-bold text-indigo-800 uppercase tracking-wider block mb-1">
+                    <span class="material-icons fs-6 align-middle me-1">assignment</span> Topshiriq (Rezolyutsiya):
+                  </div>
+                  <p class="mb-1"><strong>Ijrochi:</strong> A. Qodirov (Kafedra mudiri)</p>
+                  <p class="mb-1"><strong>Matn:</strong> O'quv rejasini ko'rib chiqib taklif kiriting</p>
+                  <p class="mb-0 text-gray-500"><strong>Muddat:</strong> 2026-08-01</p>
+                </div>
+              ` : ''}
+
+            </div>
+            
+            ${currentStepIndex === 2 ? `
+              <p class="text-xs text-gray-500 mt-2 text-center bg-white border px-3 py-2 rounded-full shadow-sm">
+                <span class="material-icons align-middle text-indigo-500 fs-6 me-1">ads_click</span>
+                Shtampni hujjat bo'sh burchagiga **sudrab olib boring** va joylashtiring.
+              </p>
+            ` : ''}
+          </div>
+
+          <!-- User Forms Control Panel -->
+          <div class="col-lg-5.5">
+            <div class="card border-0 shadow-lg rounded-2xl bg-white">
+              <div class="card-header bg-white border-bottom border-gray-150 py-3 px-4 fw-bold text-gray-900 d-flex align-items-center gap-2">
+                <span class="material-icons text-indigo-600">border_color</span>
+                <span>Harakatni bajarish</span>
+              </div>
+              <div class="card-body p-4">
+                
+                ${currentStepIndex === 1 ? `
+                  <!-- Step 1: Input details to Register Document -->
+                  <form id="form-resolution">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Rezolyutsiya kiritish va yo'naltirish</h4>
+                    <div class="mb-3">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Ijrochi mas'ul xodim:</label>
+                      <select id="res-executor" class="form-select rounded-xl text-xs py-2.5" required>
+                        <option value="">-- Mas'ul xodimni tanlang --</option>
+                        <option value="A. Qodirov">A. Qodirov (Kafedra mudiri)</option>
+                        <option value="B. Karimov">B. Karimov (Katta ilmiy xodim)</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Topshiriq matni:</label>
+                      <textarea id="res-text" class="form-control rounded-xl text-xs" rows="3" required>O'quv rejasini ko'rib chiqib taklif kiriting</textarea>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Nazorat muddati (Deadline):</label>
+                      <input type="date" id="res-deadline" class="form-control rounded-xl text-xs py-2.5" value="2026-08-01" required>
+                    </div>
+                    <button type="submit" class="btn btn-indigo bg-indigo-600 text-white rounded-full py-2.5 w-100 font-bold shadow-md hover:bg-indigo-700">
+                      Topshiriqni saqlash (Rezolyutsiya)
+                    </button>
+                  </form>
+                ` : ''}
+
+                ${currentStepIndex === 2 ? `
+                  <!-- Step 2: Approve & Send -->
+                  <div class="text-center py-4">
+                    <span class="material-icons text-emerald-500 fs-1 block mb-2">check_circle</span>
+                    <h5 class="fw-bold text-gray-800 mb-2">Topshiriq saqlandi</h5>
+                    <p class="text-gray-500 text-xs leading-relaxed mb-4">
+                      Hujjat va topshiriq to'liq shakllantirildi. Uni tasdiqlab, mas'ul ijrochining kabinetiga yuborish uchun pastdagi tugmani bosing.
+                    </p>
+                    <button id="btn-approve" class="btn btn-success bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 py-2.5 fw-bold w-100 shadow-md">
+                      Tasdiqlash va jo'natish
+                    </button>
+                  </div>
+                ` : ''}
+
+                ${currentStepIndex >= 3 ? `
+                  <div class="text-center py-5 text-emerald-600 font-bold">
+                    <span class="material-icons text-emerald-500 display-4 block mb-3">verified</span>
+                    Kiruvchi hujjat to'liq ro'yxatga olindi va ijrochiga rezolyutsiya yuborildi!
+                  </div>
+                ` : ''}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Drag and Drop Logic for Stamp in Step 2
+      if (currentStepIndex === 2) {
+        const stamp = document.getElementById("registry-stamp-element");
+        const docView = document.getElementById("a4-doc-view");
+        
+        if (stamp && docView) {
+          // Initialize dragging
+          let isDragging = false;
+          let offset = { x: 0, y: 0 };
+          
+          stamp.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            offset = {
+              x: stamp.offsetLeft - e.clientX,
+              y: stamp.offsetTop - e.clientY
+            };
+            stamp.style.transition = "none";
+          });
+
+          document.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            let left = e.clientX + offset.x;
+            let top = e.clientY + offset.y;
+            
+            // Constrain within document bounds
+            const maxLeft = docView.offsetWidth - stamp.offsetWidth;
+            const maxTop = docView.offsetHeight - stamp.offsetHeight;
+            
+            left = Math.max(0, Math.min(left, maxLeft));
+            top = Math.max(0, Math.min(top, maxTop));
+            
+            stamp.style.left = `${left}px`;
+            stamp.style.top = `${top}px`;
+            
+            sessionState.stampPosition = { x: left, y: top };
+          });
+
+          document.addEventListener("mouseup", () => {
+            isDragging = false;
+          });
+        }
+
+        document.getElementById("btn-approve").addEventListener("click", function() {
+          submitAction("approve_resolution", { is_approved: "true" });
+        });
+      }
+
+      // Submit Form resolution step 1
+      if (currentStepIndex === 1) {
+        document.getElementById("form-resolution").addEventListener("submit", function(e) {
+          e.preventDefault();
+          const payload = {
+            executor: document.getElementById("res-executor").value,
+            text: document.getElementById("res-text").value,
+            deadline: document.getElementById("res-deadline").value
+          };
+          submitAction("add_resolution", payload);
+        });
+      }
+    }
+
+    // 📤 SCENARIO 2: CHIQUVCHI WORKFLOW
+    function renderChiquvchiWorkflow() {
+      mainSandboxView.innerHTML = `
+        <div class="row g-4 animate__animated animate__fadeIn">
+          <!-- Main Work Editor Area -->
+          <div class="col-lg-7">
+            <div class="card border-0 shadow-lg rounded-2xl overflow-hidden bg-white">
+              <!-- Online MS Word Editor Header Simulation -->
+              <div class="word-editor-toolbar">
+                <button class="word-editor-btn" title="Undo"><span class="material-icons fs-5">undo</span></button>
+                <button class="word-editor-btn" title="Redo"><span class="material-icons fs-5">redo</span></button>
+                <div class="vr bg-gray-300 my-1"></div>
+                <select class="form-select form-select-sm rounded-md py-0.5" style="width: 130px; font-size: 11px;">
+                  <option>Times New Roman</option>
+                  <option>Arial</option>
+                  <option>Calibri</option>
+                </select>
+                <select class="form-select form-select-sm rounded-md py-0.5" style="width: 60px; font-size: 11px;">
+                  <option>14</option>
+                  <option>12</option>
+                  <option>16</option>
+                </select>
+                <div class="vr bg-gray-300 my-1"></div>
+                <button class="word-editor-btn fw-bold" title="Bold">B</button>
+                <button class="word-editor-btn italic" title="Italic">I</button>
+                <button class="word-editor-btn text-decoration-underline" title="Underline">U</button>
+                <div class="vr bg-gray-300 my-1"></div>
+                <button class="word-editor-btn" title="Align Left"><span class="material-icons fs-5">format_align_left</span></button>
+                <button class="word-editor-btn" title="Align Center"><span class="material-icons fs-5">format_align_center</span></button>
+                <button class="word-editor-btn" title="Align Right"><span class="material-icons fs-5">format_align_right</span></button>
+              </div>
+
+              <!-- Word Document Sheet Page -->
+              <div class="p-4 bg-gray-100 d-flex justify-content-center">
+                <div class="a4-page relative" style="font-size: 0.95rem; line-height: 1.4; padding: 36px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);" id="word-editor-content">
+                  <!-- Word Content based on steps -->
+                  ${currentStepIndex === 0 ? `
+                    <div class="text-center py-5 text-gray-400">
+                      <span class="material-icons display-3 mb-2">edit_note</span>
+                      <p>Hujjat matnini yozish uchun o'ng paneldagi Word tahrirlash formalaridan foydalaning.</p>
+                    </div>
+                  ` : `
+                    <!-- Populated Word sheet -->
+                    <div class="text-center fw-bold border-bottom border-dark pb-3 mb-3 uppercase font-serif" style="font-size: 1.05rem;">
+                      O'zbekiston Respublikasi Raqamli Texnologiyalar Vazirligiga
+                    </div>
+                    <div class="py-2 text-justify font-serif" style="text-indent: 30px;">
+                      <p class="mb-3"><strong>Mavzu:</strong> ${sessionState.draft.doc_title || 'SI texnologiyalarini joriy etish takliflar bo\'yicha'}</p>
+                      <p class="mb-3">
+                        Vazirlikning 2026-yil 20-iyuldagi 12-45/89-sonli xatiga javoban, o'quv rejalari va darsliklar tarkibiga sun'iy intellekt modullarini integratsiya qilish bo'yicha barcha takliflar va hisobotlar to'liq ishlab chiqildi.
+                      </p>
+                      <p class="mb-4">
+                        Tegishli takliflar va o'quv darslari rejalari ushbu xatga ilova qilingan hisobot faylida batafsil keltirilgan. Iltimos, ko'rib chiqib tasdiqlashingizni so'raymiz.
+                      </p>
+                    </div>
+                    <div class="text-end font-serif fw-bold mt-4">
+                      Tashkilot Rahbari: J. Ergashev
+                    </div>
+
+                    <!-- Render Attachments -->
+                    ${currentStepIndex >= 2 ? `
+                      <div class="mt-4 border border-blue-200 bg-blue-50/20 p-2.5 rounded-xl d-flex align-items-center gap-2">
+                        <span class="material-icons text-red-500">picture_as_pdf</span>
+                        <div class="text-xs">
+                          <span class="font-bold text-gray-700 block">si_hisobot.pdf</span>
+                          <span class="text-gray-400">PDF Hujjat | 1.2 MB</span>
+                        </div>
+                      </div>
+                    ` : ''}
+
+                    <!-- ERI Signature stamp (renders after final step) -->
+                    ${currentStepIndex >= 3 ? `
+                      <div class="eri-signature-box mt-4 border border-emerald-500 bg-emerald-50/20 rounded-xl p-3 d-flex align-items-center gap-3 animate__animated animate__fadeIn">
+                        <span class="material-icons text-emerald-500 fs-2">verified_user</span>
+                        <div class="text-xs">
+                          <span class="font-bold block">IMZOLANGAN (ERI)</span>
+                          <span>Rahbar: J. Ergashev<br>Sertifikat: 56984CBA</span>
+                        </div>
+                      </div>
+                    ` : ''}
+                  `}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions Forms -->
+          <div class="col-lg-5">
+            <div class="card border-0 shadow-lg rounded-2xl bg-white">
+              <div class="card-header bg-white border-bottom border-gray-150 py-3 px-4 fw-bold text-gray-900 d-flex align-items-center gap-2">
+                <span class="material-icons text-indigo-600">settings</span>
+                <span>Tahrirlash va Sozlamalar</span>
+              </div>
+              <div class="card-body p-4">
+                
+                ${currentStepIndex === 0 ? `
+                  <form id="form-create-draft">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">1-Bosqich: Loyiha yaratish</h4>
+                    <div class="mb-3">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Javob xati sarlavhasi:</label>
+                      <input type="text" id="draft-title" class="form-control rounded-xl text-xs py-2.5" value="O'quv rejalariga SI tatbiq etish bo'yicha javob xati" required>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Asosiy xat matni:</label>
+                      <textarea id="draft-body" class="form-control rounded-xl text-xs" rows="5" required>Ssenariy asosida tayyorlangan hisobot ilova qilinmoqda. Takliflar o'quv rejasiga muvofiq ishlab chiqilgan.</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-indigo bg-indigo-600 text-white rounded-full py-2.5 w-100 font-bold shadow-md hover:bg-indigo-700">
+                      Word hujjatini saqlash
+                    </button>
+                  </form>
+                ` : ''}
+
+                ${currentStepIndex === 1 ? `
+                  <!-- Attachment Upload -->
+                  <div class="py-4">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">2-Bosqich: Fayl ilova qilish</h4>
+                    <div class="border-2 border-dashed border-gray-300 rounded-3xl p-4 text-center bg-gray-50/50">
+                      <span class="material-icons text-gray-300 fs-1 block mb-2">cloud_upload</span>
+                      <p class="text-xs font-semibold text-gray-700 mb-1">Hisobot faylini tizimga biriktiring</p>
+                      <p class="text-2xs text-gray-400 mb-3">Fayl nomi: <strong>si_hisobot.pdf</strong></p>
+                      <button id="btn-attach" class="btn btn-outline-indigo rounded-full px-4 py-2 text-xs font-bold">
+                        Fayl tanlash (Upload PDF)
+                      </button>
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${currentStepIndex === 2 ? `
+                  <!-- Select Supervisor & Sign -->
+                  <form id="form-send-sign">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">3-Bosqich: Imzoga jo'natish</h4>
+                    <div class="mb-4">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Imzolaydigan rahbar:</label>
+                      <select id="sign-supervisor" class="form-select rounded-xl text-xs py-2.5" required>
+                        <option value="">-- Rahbarni tanlang --</option>
+                        <option value="J. Ergashev - Direktor">J. Ergashev - Direktor</option>
+                        <option value="S. Sobirov - Bosh muhandis">S. Sobirov - Bosh muhandis</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-indigo bg-indigo-600 text-white rounded-full py-2.5 w-100 font-bold shadow-md hover:bg-indigo-700">
+                      Rahbarga imzolashga yuborish
+                    </button>
+                  </form>
+                ` : ''}
+
+                ${currentStepIndex >= 3 ? `
+                  <div class="text-center py-5 text-emerald-600 font-bold">
+                    <span class="material-icons text-emerald-500 display-4 block mb-3">verified</span>
+                    Chiquvchi javob xati loyihasi rahbarning imzoga kiritish oynasiga muvaffaqiyatli jo'natildi!
+                  </div>
+                ` : ''}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Step 0 Submit
+      if (currentStepIndex === 0) {
+        document.getElementById("form-create-draft").addEventListener("submit", function(e) {
+          e.preventDefault();
+          const payload = {
+            doc_title: document.getElementById("draft-title").value,
+            doc_body: document.getElementById("draft-body").value
+          };
+          sessionState.draft = payload;
+          submitAction("create_draft", payload);
+        });
+      }
+
+      // Step 1 Submit
+      if (currentStepIndex === 1) {
+        document.getElementById("btn-attach").addEventListener("click", function() {
+          submitAction("attach_file", { file_name: "si_hisobot.pdf" });
+        });
+      }
+
+      // Step 2 Submit
+      if (currentStepIndex === 2) {
+        document.getElementById("form-send-sign").addEventListener("submit", function(e) {
+          e.preventDefault();
+          const payload = {
+            supervisor: document.getElementById("sign-supervisor").value
+          };
+          submitAction("send_to_sign", payload);
+        });
+      }
+    }
+
+    // 📋 SCENARIO 3: ICHKI WORKFLOW (BUYRUQ VA NAZORAT)
+    function renderIchkiWorkflow() {
+      mainSandboxView.innerHTML = `
+        <div class="row g-4 animate__animated animate__fadeIn">
+          <!-- Document Word sheet -->
+          <div class="col-lg-7">
+            <div class="card border-0 shadow-lg rounded-2xl overflow-hidden bg-white">
+              <div class="word-editor-toolbar">
+                <button class="word-editor-btn" title="Undo"><span class="material-icons fs-5">undo</span></button>
+                <button class="word-editor-btn" title="Redo"><span class="material-icons fs-5">redo</span></button>
+                <div class="vr bg-gray-300 my-1"></div>
+                <span class="text-xs text-gray-500 font-semibold font-sans">Edo.ijro.uz Buyruq Blankasi</span>
+              </div>
+              
+              <div class="p-4 bg-gray-100 d-flex justify-content-center">
+                <div class="a4-page font-serif relative" style="font-size: 0.95rem; line-height: 1.4; box-shadow: 0 4px 10px rgba(0,0,0,0.05);" id="word-editor-content">
+                  
+                  ${currentStepIndex === 0 ? `
+                    <div class="text-center py-5 text-gray-400">
+                      <span class="material-icons display-3 mb-2">note_add</span>
+                      <p>Ichki buyruq matnini tayyorlash uchun o'ng tahrirlash panelidan foydalaning.</p>
+                    </div>
+                  ` : `
+                    <!-- Populated Buyruq Blank -->
+                    <div class="text-center border-bottom border-dark pb-3 mb-4">
+                      <h4 class="fw-bold text-gray-900 mb-1" style="font-size: 1.15rem; text-transform: uppercase;">
+                        UNICON SOFT MCHJ
+                      </h4>
+                      <h5 class="fw-bold text-gray-700 tracking-widest" style="font-size: 0.85rem; text-transform: uppercase;">ICHKI BUYRUQ LOYIHASI</h5>
+                    </div>
+
+                    <div class="mb-4 text-justify" style="text-indent: 30px;">
+                      <p class="fw-bold mb-2"><strong>Mavzu:</strong> ${sessionState.order.order_title || 'Malaka oshirish kurslari to\'g\'risida'}</p>
+                      <p class="mb-3">${sessionState.order.order_content || 'Xodimlarning malaka oshirish kurslarini tashkil etish haqida buyruq loyihasi'}</p>
+                    </div>
+
+                    <!-- Controller assignment details -->
+                    ${currentStepIndex >= 2 ? `
+                      <div class="mt-4 border-2 border-dashed border-amber-300 bg-amber-50/20 p-3 rounded-xl text-xs text-amber-800">
+                        <span class="font-bold block mb-1 uppercase"><i class="bi bi-clock-history"></i> Ijro Nazorati:</span>
+                        <p class="mb-1"><strong>Mas'ul nazoratchi:</strong> K. Tursunov</p>
+                        <p class="mb-0"><strong>Ijro muddati:</strong> ${sessionState.controller.deadline || '2026-08-15'}</p>
+                      </div>
+                    ` : ''}
+
+                    <!-- Sign Stamp -->
+                    ${currentStepIndex >= 3 ? `
+                      <div class="eri-signature-box mt-4 border border-emerald-500 bg-emerald-50/20 rounded-xl p-3 d-flex align-items-center gap-3 animate__animated animate__fadeIn">
+                        <span class="material-icons text-emerald-500 fs-2">verified_user</span>
+                        <div class="text-xs">
+                          <span class="font-bold block">BUYRUQ E'LON QILINDI (IMZOLANDI)</span>
+                          <span>Tasdiqlovchi: Direktor (J. Ergashev)<br>Sana: 2026-07-22</span>
+                        </div>
+                      </div>
+                    ` : ''}
+                  `}
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Forms Control panel -->
+          <div class="col-lg-5">
+            <div class="card border-0 shadow-lg rounded-2xl bg-white">
+              <div class="card-header bg-white border-bottom border-gray-150 py-3 px-4 fw-bold text-gray-900 d-flex align-items-center gap-2">
+                <span class="material-icons text-indigo-600">settings</span>
+                <span>Tahrirlash va Parametrlar</span>
+              </div>
+              <div class="card-body p-4">
+                
+                ${currentStepIndex === 0 ? `
+                  <form id="form-create-order">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">1-Bosqich: Buyruq yozish</h4>
+                    <div class="mb-3">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Buyruq sarlavhasi:</label>
+                      <input type="text" id="order-title" class="form-control rounded-xl text-xs py-2.5" value="Malaka oshirish kurslari to'g'risida" required>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Buyruq matni:</label>
+                      <textarea id="order-content" class="form-control rounded-xl text-xs" rows="5" required>Barcha xodimlarning professional malakasini oshirish maqsadida, 2026-yil avgust oyida malaka oshirish o'quv kurslari tashkil etilsin. Kurslarni tashkil etish mas'uliyati o'quv bo'limiga yuklatilsin.</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-indigo bg-indigo-600 text-white rounded-full py-2.5 w-100 font-bold shadow-md hover:bg-indigo-700">
+                      Buyruq loyihasini saqlash
+                    </button>
+                  </form>
+                ` : ''}
+
+                ${currentStepIndex === 1 ? `
+                  <form id="form-set-controller">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">2-Bosqich: Nazorat choralarini belgilash</h4>
+                    <div class="mb-3">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Mas'ul nazoratchi:</label>
+                      <select id="ctrl-name" class="form-select rounded-xl text-xs py-2.5" required>
+                        <option value="">-- Tanlang --</option>
+                        <option value="K. Tursunov">K. Tursunov (Nazorat bo'limi boshlig'i)</option>
+                        <option value="M. Aliyev">M. Aliyev (HR boshlig'i)</option>
+                      </select>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label text-xs font-bold text-gray-600 uppercase">Nazorat muddati (Deadline):</label>
+                      <input type="date" id="ctrl-deadline" class="form-control rounded-xl text-xs py-2.5" value="2026-08-15" required>
+                    </div>
+                    <button type="submit" class="btn btn-indigo bg-indigo-600 text-white rounded-full py-2.5 w-100 font-bold shadow-md hover:bg-indigo-700">
+                      Nazoratchini saqlash
+                    </button>
+                  </form>
+                ` : ''}
+
+                ${currentStepIndex === 2 ? `
+                  <div class="text-center py-4">
+                    <span class="material-icons text-emerald-500 fs-1 block mb-2">verified_user</span>
+                    <h5 class="fw-bold text-gray-800 mb-2">Buyruq tasdiqlandi</h5>
+                    <p class="text-gray-500 text-xs leading-relaxed mb-4">
+                      Buyruq matni va nazoratchi muvaffaqiyatli saqlandi. Buyruqni ERI (Elektron Raqamli Imzo) orqali rasman imzolab e'lon qilish uchun pastdagi tugmani bosing.
+                    </p>
+                    <button id="btn-publish" class="btn btn-success bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 py-2.5 w-100 fw-bold shadow-md">
+                      ERI bilan imzolash va e'lon qilish
+                    </button>
+                  </div>
+                ` : ''}
+
+                ${currentStepIndex >= 3 ? `
+                  <div class="text-center py-5 text-emerald-600 font-bold">
+                    <span class="material-icons text-emerald-500 display-4 block mb-3">verified</span>
+                    Ichki buyruq muvaffaqiyatli imzolandi va e'lon qilindi!
+                  </div>
+                ` : ''}
+
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Step 0 Submit
+      if (currentStepIndex === 0) {
+        document.getElementById("form-create-order").addEventListener("submit", function(e) {
+          e.preventDefault();
+          const payload = {
+            order_title: document.getElementById("order-title").value,
+            order_content: document.getElementById("order-content").value
+          };
+          sessionState.order = payload;
+          submitAction("write_order", payload);
+        });
+      }
+
+      // Step 1 Submit
+      if (currentStepIndex === 1) {
+        document.getElementById("form-set-controller").addEventListener("submit", function(e) {
+          e.preventDefault();
+          const payload = {
+            controller_name: document.getElementById("ctrl-name").value,
+            deadline: document.getElementById("ctrl-deadline").value
+          };
+          sessionState.controller = payload;
+          submitAction("set_controller", payload);
+        });
+      }
+
+      // Step 2 Submit
+      if (currentStepIndex === 2) {
+        document.getElementById("btn-publish").addEventListener("click", function() {
+          submitAction("publish_order", { is_signed: "true" });
+        });
+      }
+    }
+
+    // Submit Action Helper
+    function submitAction(actionType, payload) {
+      const url = `action/`;
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken
+        },
+        body: JSON.stringify({
+          action_type: actionType,
+          payload: payload
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          currentStepIndex = data.current_step;
+          showToast(data.message || "Harakat bajarildi!", "success");
+
+          // Rerender layout
+          renderRouter();
+
+          if (data.is_completed) {
+            // congrats modal
+            const myModal = new bootstrap.Modal(document.getElementById('congratsModal'));
+            myModal.show();
+          }
+        } else {
+          showToast(data.message || "Xatolik yuz berdi!", "danger");
+          mentorHintText.innerHTML = `<span class="text-rose-300 font-bold">${data.feedback}</span>`;
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        showToast("Tizim bilan ulanishda xatolik!", "danger");
+      });
+    }
+
+    // Toast Alert popup Helper
+    function showToast(message, type = "success") {
+      const toastContainer = document.createElement("div");
+      toastContainer.className = `position-fixed bottom-0 start-50 translate-middle-x mb-4 z-50 animate__animated animate__bounceInUp`;
+      
+      const bgColor = type === "success" ? "bg-emerald-600" : "bg-rose-600";
+      toastContainer.innerHTML = `
+        <div class="text-white ${bgColor} px-5 py-3 rounded-full shadow-lg fw-bold d-flex align-items-center gap-2">
+          ${type === "success" ? '<span class="material-icons">check_circle</span>' : '<span class="material-icons">error</span>'}
+          <span style="font-size: 0.8rem;">${message}</span>
+        </div>
+      `;
+      document.body.appendChild(toastContainer);
+
+      setTimeout(() => {
+        toastContainer.className = `position-fixed bottom-0 start-50 translate-middle-x mb-4 z-50 animate__animated animate__fadeOutDown`;
+        setTimeout(() => toastContainer.remove(), 500);
+      }, 3000);
+    }
+
+    // Initialize Router
+    renderRouter();
+  });
+</script>
+{% endblock %}

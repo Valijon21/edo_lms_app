@@ -1,9 +1,14 @@
 """Asosiy URL konfiguratsiyasi."""
 from django.contrib import admin
 from django.urls import include, path
+from django.utils.translation import gettext_lazy as _
 
 from core.views import HomeView, PlatformInfoView
 from courses.admin_views import upload_image
+
+admin.site.site_header = _("Edo LMS Admin Panel")
+admin.site.site_title = _("Edo LMS Admin")
+admin.site.index_title = _("Welcome to Edo LMS Administration")
 
 urlpatterns = [
     path("admin/upload-image/", upload_image, name="admin_upload_image"),
@@ -15,6 +20,7 @@ urlpatterns = [
     path("courses/", include("courses.urls")),
     path("quizzes/", include("quizzes.urls")),
     path("progress/", include("progress.urls")),
+    path("simulator/", include("simulator.urls")),
 ]
 
 from django.conf import settings
