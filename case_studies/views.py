@@ -1,21 +1,22 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.core.exceptions import ValidationError
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import CaseStudy, UserCaseProgress
 from .serializers import CaseStudySerializer, ScenarioNodeSerializer, UserCaseProgressSerializer
 from .services import start_case_study, submit_case_decision
 
-class CaseStudyListView(LoginRequiredMixin, TemplateView):
-    template_name = "case_studies/case_play.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["cases"] = CaseStudy.objects.filter(is_active=True)
-        return context
+class CaseStudyListView(LoginRequiredMixin, ListView):
+    """Frontend view for case studies list"""
+    model = CaseStudy
+    template_name = "case_studies/case_list.html"
+    context_object_name = "cases"
+    
+    def get_queryset(self):
+        return CaseStudy.objects.filter(is_active=True)
 
 class CaseStudyViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.IsAuthenticated]

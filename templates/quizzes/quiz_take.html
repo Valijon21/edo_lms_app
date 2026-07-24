@@ -15,56 +15,417 @@
   </ol>
 </nav>
 
-<div class="row justify-content-center">
-  <div class="col-lg-8">
-    <div class="card border-0 shadow-lg rounded-3xl overflow-hidden mb-5 glass-card">
-      <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900 text-white py-5 px-4 text-center shadow-md">
-        <span class="badge bg-white/20 text-white rounded-full px-4 py-1.5 mb-2 fw-bold text-uppercase fs-8 tracking-wider border border-white/10" style="font-family: 'Outfit', sans-serif;">
+<style>
+  .question-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #e5e7eb;
+    background-color: #f9fafb;
+    color: #4b5563;
+    position: relative;
+    user-select: none;
+  }
+  
+  .question-badge:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    transform: translateY(-1px);
+  }
+  
+  .question-badge.active {
+    border-color: #4f46e5 !important;
+    background-color: #4f46e5 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2) !important;
+  }
+  
+  .question-badge.answered {
+    border-color: #10b981;
+    background-color: #10b981;
+    color: #ffffff;
+  }
+  
+  .question-badge.answered.active {
+    border-color: #047857 !important;
+    background-color: #059669 !important;
+  }
+  
+  .question-badge.flagged {
+    border-color: #f59e0b;
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+
+  .question-badge.flagged.active {
+    border-color: #d97706 !important;
+    background-color: #f59e0b !important;
+    color: #ffffff !important;
+  }
+  
+  .question-badge .flag-indicator {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    background-color: #f59e0b;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    display: none;
+  }
+  
+  .question-badge.flagged .flag-indicator {
+    display: block;
+  }
+
+  .question-container {
+    opacity: 0;
+    display: none;
+    transition: opacity 0.25s ease-in-out;
+  }
+
+  .question-container.active {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Keyboard shortcut hint styling */
+  .shortcut-hint-badge {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.2rem;
+    background-color: #e2e8f0;
+    color: #475569;
+    font-family: monospace;
+    border-bottom: 2px solid #cbd5e1;
+    margin-left: auto;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .btn-check:checked + .quiz-option-label .shortcut-hint-badge {
+    background-color: rgba(79, 70, 229, 0.15);
+    color: #4f46e5;
+    border-bottom-color: rgba(79, 70, 229, 0.3);
+  }
+</style>
+
+<div class="row g-4">
+  <!-- Left Column: Progress & Question Grid Panel -->
+  <div class="col-lg-4">
+    <div class="card border-0 shadow-lg rounded-3xl overflow-hidden glass-card sticky-lg-top" style="top: 100px; z-index: 10;">
+      <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-900 text-white py-4 px-4 shadow-md text-center">
+        <span class="badge bg-white/20 text-white rounded-full px-3.5 py-1 mb-2 fw-bold text-uppercase fs-8 tracking-wider border border-white/10" style="font-family: 'Outfit', sans-serif;">
           {% if quiz_type == 'lesson' %}Mavzu Testi{% else %}Dars Testi{% endif %}
         </span>
-        <h2 class="h3 fw-extrabold mb-1 text-white tracking-tight" style="font-family: 'Outfit', sans-serif;">
+        <h3 class="h5 fw-extrabold mb-0 text-white tracking-tight" style="font-family: 'Outfit', sans-serif;">
           {% if quiz_type == 'lesson' %}{{ lesson.title }}{% else %}{{ module.title }}{% endif %}
-        </h2>
-        <p class="text-indigo-100 mb-0 mt-2 small opacity-90 fw-medium">
-          <i class="bi bi-patch-question me-1"></i> Savollar soni: {{ questions.count }} ta &nbsp;|&nbsp; 
+        </h3>
+        <p class="text-indigo-200 mb-0 mt-1 small opacity-90 fw-medium">
           <i class="bi bi-check-circle me-1"></i> Minimal o'tish balli: 70%
         </p>
       </div>
       
-      <form method="post" action="{% if quiz_type == 'lesson' %}{% url 'quizzes:lesson_quiz_submit' lesson.id %}{% else %}{% url 'quizzes:quiz_submit' module.id %}{% endif %}" class="card-body p-4 p-md-5 bg-white/60">
+      <div class="card-body p-4 bg-white/60">
+        <!-- Progress Bar -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-1.5">
+            <span class="text-xs fw-bold text-gray-500 uppercase tracking-wider">Jarayon</span>
+            <span class="text-sm fw-extrabold text-indigo-600" id="progress-text">0% (0 / {{ questions.count }})</span>
+          </div>
+          <div class="progress rounded-full" style="height: 10px; background-color: #e2e8f0; margin-bottom: 0;">
+            <div class="progress-bar bg-indigo-600 rounded-full transition-all duration-300" id="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+
+        <!-- Question Grid -->
+        <div class="mb-4">
+          <span class="text-xs fw-bold text-gray-500 uppercase tracking-wider d-block mb-3">Savollar navigatsiyasi</span>
+          <div class="d-flex flex-wrap gap-2 justify-content-start" id="question-grid">
+            {% for question in questions %}
+              <div class="question-badge" data-target-index="{{ forloop.counter0 }}" id="badge-{{ forloop.counter0 }}">
+                {{ forloop.counter }}
+                <div class="flag-indicator"></div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <hr class="my-4 border-gray-100">
+
+        <!-- Info Legend / Stats -->
+        <div class="d-flex flex-column gap-2 text-sm text-gray-600">
+          <div class="d-flex align-items-center gap-2">
+            <span class="d-inline-block rounded bg-gray-100 border border-gray-300" style="width: 12px; height: 12px;"></span>
+            <span>Javob berilmagan</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="d-inline-block rounded bg-emerald-500" style="width: 12px; height: 12px;"></span>
+            <span>Javob berilgan</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="d-inline-block rounded bg-amber-400" style="width: 12px; height: 12px;"></span>
+            <span>Keyinroq qaytish</span>
+          </div>
+        </div>
+
+        <!-- Finish Quiz Button -->
+        <hr class="my-4 border-gray-100">
+        <button type="button" class="btn btn-danger bg-red-600 hover:bg-red-700 text-white w-100 rounded-2xl py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 transition-all" id="sidebar-submit-btn">
+          <i class="bi bi-check-circle-fill"></i> Testni yakunlash
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Active Question Card -->
+  <div class="col-lg-8">
+    <div class="card border-0 shadow-lg rounded-3xl overflow-hidden mb-5 glass-card">
+      <form method="post" id="quiz-form" action="{% if quiz_type == 'lesson' %}{% url 'quizzes:lesson_quiz_submit' lesson.id %}{% else %}{% url 'quizzes:quiz_submit' module.id %}{% endif %}" class="card-body p-4 p-md-5 bg-white/60">
         {% csrf_token %}
         
-        {% for question in questions %}
-          <div class="question-block {% if not forloop.last %}mb-5{% endif %}">
-            <h4 class="fw-extrabold text-gray-900 h5 mb-4 d-flex align-items-start leading-snug">
-              <span class="text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2.5 py-0.5 me-3 text-base font-bold shadow-sm">{{ forloop.counter }}</span>
-              <span class="pt-0.5" style="font-family: 'Outfit', sans-serif;">{{ question.text }}</span>
-            </h4>
-            
-            <div class="row g-3">
-              {% for answer in question.answers.all %}
-                <div class="col-12">
-                  <input type="radio" class="btn-check" name="question_{{ question.id }}" id="ans-{{ answer.id }}" value="{{ answer.id }}" required>
-                  <label class="quiz-option-label text-gray-800 transition-all duration-200" for="ans-{{ answer.id }}">
-                    <span class="custom-radio-circle me-3">
-                      {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% elif forloop.counter == 5 %}E{% elif forloop.counter == 6 %}F{% elif forloop.counter == 7 %}G{% elif forloop.counter == 8 %}H{% else %}{{ forloop.counter }}{% endif %}
-                    </span>
-                    <span class="fw-medium text-base">{{ answer.text }}</span>
-                  </label>
-                </div>
-              {% endfor %}
+        <!-- Questions Wrapper -->
+        <div class="quiz-questions-wrapper">
+          {% for question in questions %}
+            <div class="question-container" data-question-id="{{ question.id }}" data-question-index="{{ forloop.counter0 }}">
+              <!-- Question Header -->
+              <h4 class="fw-extrabold text-gray-900 h5 mb-4 d-flex align-items-start leading-snug">
+                <span class="text-indigo-600 bg-indigo-50 border border-indigo-100 rounded-lg px-2.5 py-0.5 me-3 text-base font-bold shadow-sm">{{ forloop.counter }}</span>
+                <span class="pt-0.5" style="font-family: 'Outfit', sans-serif;">{{ question.text }}</span>
+              </h4>
+              
+              <!-- Options -->
+              <div class="row g-3">
+                {% for answer in question.shuffled_answers|default:question.answers.all %}
+                  <div class="col-12">
+                    <input type="radio" class="btn-check quiz-option-input" name="question_{{ question.id }}" id="ans-{{ answer.id }}" value="{{ answer.id }}" data-question-index="{{ forloop.parentloop.counter0 }}">
+                    <label class="quiz-option-label text-gray-800 transition-all duration-200" for="ans-{{ answer.id }}">
+                      <span class="custom-radio-circle me-3">
+                        {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% elif forloop.counter == 5 %}E{% elif forloop.counter == 6 %}F{% elif forloop.counter == 7 %}G{% elif forloop.counter == 8 %}H{% else %}{{ forloop.counter }}{% endif %}
+                      </span>
+                      <span class="fw-medium text-base">{{ answer.text }}</span>
+                      
+                      <!-- Keyboard shortcut display -->
+                      <span class="shortcut-hint-badge d-none d-sm-inline-block">
+                        {% if forloop.counter == 1 %}Key: A{% elif forloop.counter == 2 %}Key: B{% elif forloop.counter == 3 %}Key: C{% elif forloop.counter == 4 %}Key: D{% elif forloop.counter == 5 %}Key: E{% elif forloop.counter == 6 %}Key: F{% elif forloop.counter == 7 %}Key: G{% elif forloop.counter == 8 %}Key: H{% endif %}
+                      </span>
+                    </label>
+                  </div>
+                {% endfor %}
+              </div>
             </div>
-          </div>
-          {% if not forloop.last %}<hr class="my-5 border-gray-100">{% endif %}
-        {% endfor %}
+          {% endfor %}
+        </div>
 
-        <div class="text-center mt-5">
-          <button type="submit" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-5 py-3 fw-extrabold shadow-md hover:shadow-lg transition-all duration-200 d-flex align-items-center gap-2 mx-auto">
-            Natijalarni tekshirish <i class="bi bi-chevron-right fs-5"></i>
+        <!-- Navigation Action Buttons -->
+        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mt-5 pt-4 border-t border-gray-100">
+          <button type="button" class="btn btn-outline-secondary rounded-full px-4 py-2.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm transition-all" id="prev-btn">
+            <i class="bi bi-chevron-left"></i> Oldingi
+          </button>
+          
+          <button type="button" class="btn btn-outline-warning rounded-full px-4 py-2.5 fw-bold d-flex align-items-center gap-1.5 shadow-sm transition-all" id="flag-btn">
+            <i class="bi bi-flag"></i> Keyinroq qaytish
+          </button>
+          
+          <button type="button" class="btn btn-indigo bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-4 py-2.5 fw-bold d-flex align-items-center gap-1.5 shadow-md transition-all" id="next-btn">
+            Keyingi <i class="bi bi-chevron-right"></i>
+          </button>
+
+          <button type="submit" class="btn btn-success bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 py-2.5 fw-extrabold d-none align-items-center gap-1.5 shadow-md transition-all" id="submit-btn">
+            Natijalarni tekshirish <i class="bi bi-check-circle-fill"></i>
           </button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const quizForm = document.getElementById('quiz-form');
+    const sidebarSubmitBtn = document.getElementById('sidebar-submit-btn');
+    const questions = document.querySelectorAll('.question-container');
+    const badges = document.querySelectorAll('.question-badge');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const flagBtn = document.getElementById('flag-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    
+    let currentIndex = 0;
+    const totalQuestions = questions.length;
+    
+    // Store flagged state locally in memory
+    const flaggedQuestions = new Set();
+
+    function showQuestion(index) {
+      if (index < 0 || index >= totalQuestions) return;
+      
+      // Remove active states
+      questions[currentIndex].classList.remove('active');
+      badges[currentIndex].classList.remove('active');
+      
+      // Update index
+      currentIndex = index;
+      
+      // Set active states
+      questions[currentIndex].classList.add('active');
+      badges[currentIndex].classList.add('active');
+      
+      // Update Buttons
+      prevBtn.disabled = currentIndex === 0;
+      
+      if (currentIndex === totalQuestions - 1) {
+        nextBtn.classList.add('d-none');
+        submitBtn.classList.remove('d-none');
+        submitBtn.classList.add('d-flex');
+      } else {
+        nextBtn.classList.remove('d-none');
+        submitBtn.classList.add('d-none');
+        submitBtn.classList.remove('d-flex');
+      }
+      
+      updateFlagButtonState();
+    }
+    
+    function toggleFlag() {
+      const activeBadge = badges[currentIndex];
+      if (flaggedQuestions.has(currentIndex)) {
+        flaggedQuestions.delete(currentIndex);
+        activeBadge.classList.remove('flagged');
+      } else {
+        flaggedQuestions.add(currentIndex);
+        activeBadge.classList.add('flagged');
+      }
+      updateFlagButtonState();
+    }
+    
+    function updateFlagButtonState() {
+      if (flaggedQuestions.has(currentIndex)) {
+        flagBtn.innerHTML = '<i class="bi bi-flag-fill"></i> Belgilangan';
+        flagBtn.classList.remove('btn-outline-warning');
+        flagBtn.classList.add('btn-warning');
+      } else {
+        flagBtn.innerHTML = '<i class="bi bi-flag"></i> Keyinroq qaytish';
+        flagBtn.classList.remove('btn-warning');
+        flagBtn.classList.add('btn-outline-warning');
+      }
+    }
+    
+    function updateProgress() {
+      let answeredCount = 0;
+      for (let i = 0; i < totalQuestions; i++) {
+        const questionId = questions[i].dataset.questionId;
+        const selected = document.querySelector(`input[name="question_${questionId}"]:checked`);
+        const badge = document.getElementById(`badge-${i}`);
+        
+        if (selected) {
+          answeredCount++;
+          badge.classList.add('answered');
+        } else {
+          badge.classList.remove('answered');
+        }
+      }
+      
+      const percent = Math.round((answeredCount / totalQuestions) * 100);
+      progressBar.style.width = `${percent}%`;
+      progressBar.setAttribute('aria-valuenow', percent);
+      progressText.textContent = `${percent}% (${answeredCount} / ${totalQuestions})`;
+    }
+    
+    // Grid badge clicks
+    badges.forEach(badge => {
+      badge.addEventListener('click', function() {
+        const targetIndex = parseInt(this.dataset.targetIndex);
+        showQuestion(targetIndex);
+      });
+    });
+    
+    // Nav button actions
+    prevBtn.addEventListener('click', () => showQuestion(currentIndex - 1));
+    nextBtn.addEventListener('click', () => showQuestion(currentIndex + 1));
+    flagBtn.addEventListener('click', toggleFlag);
+
+    // Form submission confirmation flow
+    function handleQuizSubmit(e) {
+      if (e) e.preventDefault();
+      
+      // Calculate answered questions
+      let answeredCount = 0;
+      for (let i = 0; i < totalQuestions; i++) {
+        const questionId = questions[i].dataset.questionId;
+        const selected = document.querySelector(`input[name="question_${questionId}"]:checked`);
+        if (selected) answeredCount++;
+      }
+      
+      if (answeredCount < totalQuestions) {
+        const remaining = totalQuestions - answeredCount;
+        const confirmSubmit = confirm(`Diqqat! Siz ${totalQuestions} ta savoldan faqat ${answeredCount} tasiga javob berdingiz (${remaining} ta savol javobsiz qoldi).\n\nTestni yakunlab, natijalarni tekshirishni xohlaysizmi?`);
+        if (!confirmSubmit) return;
+      }
+      
+      quizForm.submit();
+    }
+    
+    quizForm.addEventListener('submit', handleQuizSubmit);
+    if (sidebarSubmitBtn) {
+      sidebarSubmitBtn.addEventListener('click', handleQuizSubmit);
+    }
+    
+    // Auto-advance on choosing an answer
+    document.querySelectorAll('.quiz-option-input').forEach(input => {
+      input.addEventListener('change', function() {
+        updateProgress();
+        if (currentIndex < totalQuestions - 1) {
+          setTimeout(() => {
+            showQuestion(currentIndex + 1);
+          }, 300);
+        }
+      });
+    });
+    
+    // Keyboard listener for extreme productivity
+    document.addEventListener('keydown', function(e) {
+      if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+      
+      // Navigation
+      if (e.key === 'ArrowRight') {
+        if (currentIndex < totalQuestions - 1) showQuestion(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft') {
+        if (currentIndex > 0) showQuestion(currentIndex - 1);
+      }
+      
+      // Selection (A-H keyCodes)
+      const key = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].includes(key)) {
+        const activeQuestion = questions[currentIndex];
+        const options = activeQuestion.querySelectorAll('.quiz-option-input');
+        const letterIndex = key.charCodeAt(0) - 65; // A=0, B=1, ...
+        
+        if (letterIndex >= 0 && letterIndex < options.length) {
+          options[letterIndex].checked = true;
+          options[letterIndex].dispatchEvent(new Event('change'));
+        }
+      }
+      
+      // Flag (F key)
+      if (key === 'F') {
+        toggleFlag();
+      }
+    });
+    
+    // Startup
+    showQuestion(0);
+    updateProgress();
+  });
+</script>
 {% endblock %}
