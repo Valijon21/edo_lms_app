@@ -98,6 +98,7 @@ graphify-out/
 # Kiro specs and agent configurations should NOT be in git
 .kiro/
 .agents/
+.env
 
 # --- Database Files ---
 db.sqlite3

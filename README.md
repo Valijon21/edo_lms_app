@@ -68,10 +68,46 @@ pip install -r requirements.txt
 ```
 
 ### 2. Atrof-muhit o'zgaruvchilari (Environment Variables)
-`.env.example` faylidan nusxa olib, `.env` faylini yarating va kerakli sozlamalarni kiriting:
+
+**MUHIM**: `.env` fayli hech qachon git'ga commit qilinmasligi kerak!
+
+`.env.example` faylidan nusxa olib, `.env` faylini yarating:
 ```bash
+# Windows
+copy .env.example .env
+
+# Linux/macOS
 cp .env.example .env
 ```
+
+Keyin `.env` faylini ochib, o'z qiymatlaringizni kiriting:
+```env
+# Django SECRET_KEY yaratish:
+# python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+SECRET_KEY=your-generated-secret-key-here
+
+# Development uchun:
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# SQLite ishlatish uchun (tavsiya etiladi dev uchun):
+USE_POSTGRES=False
+
+# PostgreSQL ishlatish uchun:
+# USE_POSTGRES=True
+# DB_NAME=edo_app
+# DB_USER=your_username
+# DB_PASSWORD=your_password
+# DB_HOST=localhost
+# DB_PORT=5432
+```
+
+**Security Best Practices:**
+- ✅ `.env` faylini `.gitignore` da tekshiring
+- ✅ Har bir development environment uchun alohida `.env`
+- ✅ Production uchun kuchli SECRET_KEY generate qiling
+- ❌ Hech qachon `.env` ni git'ga commit qilmang
+- ❌ Hech qachon SECRET_KEY ni share qilmang
 
 ### 3. Migratsiyalar va Ma'lumotlarni Seed Qilish
 Baza tuzilmasini yaratish va uni boshlang'ich professional o'quv darslari hamda 80 ta test savollari bilan to'ldirish uchun maxsus scriptni ishga tushiramiz:
