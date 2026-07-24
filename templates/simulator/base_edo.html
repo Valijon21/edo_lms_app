@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Edo.ijro.uz — Simulator{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Custom EDO CSS -->
+    <style>
+        :root {
+            --edo-dark-blue: #1a2942;
+            --edo-purple: #5b5cff;
+            --edo-light-gray: #f5f7fa;
+            --edo-red: #dc3545;
+            --edo-green: #28a745;
+            --edo-orange: #fd7e14;
+            --edo-text-primary: #2d3748;
+            --edo-text-secondary: #718096;
+            --edo-text-white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--edo-light-gray);
+            overflow-x: hidden;
+        }
+        
+        /* SIDEBAR STYLES */
+        .edo-sidebar {
+            width: 260px;
+            background-color: var(--edo-dark-blue);

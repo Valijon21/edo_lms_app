@@ -1,0 +1,314 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: edo\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-24 10:00+0500\n"
+"PO-Revision-Date: 2026-07-24 10:00+0500\n"
+"Last-Translator: Antigravity\n"
+"Language-Team: Uzbek\n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Edo LMS Admin Panel"
+msgstr "Edo LMS Admin Paneli"
+
+msgid "Edo LMS Admin"
+msgstr "Edo LMS Admin"
+
+msgid "Welcome to Edo LMS Administration"
+msgstr "Edo LMS Boshqaruviga Xush Kelibsiz"
+
+# Accounts App
+msgid "Performer"
+msgstr "Ijrochi"
+
+msgid "Controller"
+msgstr "Nazoratchi"
+
+msgid "Leader"
+msgstr "Rahbar"
+
+msgid "user"
+msgstr "foydalanuvchi"
+
+msgid "role"
+msgstr "rol"
+
+msgid "profile"
+msgstr "foydalanuvchi profili"
+
+msgid "profiles"
+msgstr "foydalanuvchi profillari"
+
+# Courses App
+msgid "title"
+msgstr "sarlavha"
+
+msgid "description"
+msgstr "tavsif"
+
+msgid "order"
+msgstr "tartib"
+
+msgid "created at"
+msgstr "yaratilgan vaqti"
+
+msgid "course"
+msgstr "kurs"
+
+msgid "courses"
+msgstr "kurslar"
+
+msgid "module"
+msgstr "dars"
+
+msgid "modules"
+msgstr "darslar"
+
+msgid "maximum attempts"
+msgstr "maksimal urinishlar soni"
+
+msgid "Maximum number of attempts. Blank or 0 means unlimited."
+msgstr "Maksimal urinishlar soni. Bo'sh yoki 0 bo'lsa - cheksiz."
+
+msgid "lesson"
+msgstr "mavzu"
+
+msgid "lessons"
+msgstr "mavzular"
+
+msgid "content"
+msgstr "tarkibi"
+
+msgid "video URL"
+msgstr "video manzili (URL)"
+
+# Quizzes App
+msgid "question"
+msgstr "savol"
+
+msgid "questions"
+msgstr "savollar"
+
+msgid "text"
+msgstr "matn"
+
+msgid "answer"
+msgstr "javob"
+
+msgid "answers"
+msgstr "javoblar"
+
+msgid "is correct"
+msgstr "to'g'ri javob"
+
+msgid "quiz attempt"
+msgstr "test topshirish urinishi"
+
+msgid "quiz attempts"
+msgstr "test topshirish urinishlari"
+
+msgid "score"
+msgstr "to'plangan ball (%)"
+
+msgid "passed"
+msgstr "o'tdi"
+
+# Progress App
+msgid "progress"
+msgstr "o'zlashtirish progressi"
+
+msgid "progresses"
+msgstr "o'zlashtirish progresslari"
+
+msgid "completed"
+msgstr "yakunlandi"
+
+msgid "completed at"
+msgstr "yakunlangan vaqti"
+
+msgid "certificate"
+msgstr "sertifikat"
+
+msgid "certificates"
+msgstr "sertifikatlar"
+
+msgid "issued at"
+msgstr "berilgan vaqti"
+
+# Gamification App
+msgid "user gamification profile"
+msgstr "gamifikatsiya profili"
+
+msgid "user gamification profiles"
+msgstr "gamifikatsiya profillari"
+
+msgid "total XP"
+msgstr "umumiy XP ball"
+
+msgid "current streak"
+msgstr "joriy uzluksizlik (streak)"
+
+msgid "longest streak"
+msgstr "eng uzun uzluksizlik (streak)"
+
+msgid "last activity date"
+msgstr "oxirgi faollik sanasi"
+
+msgid "badge"
+msgstr "nishon"
+
+msgid "badges"
+msgstr "nishonlar"
+
+msgid "name"
+msgstr "nomi"
+
+msgid "badge type"
+msgstr "nishon turi"
+
+msgid "XP required"
+msgstr "talab qilinadigan XP ball"
+
+msgid "icon"
+msgstr "ikonka"
+
+msgid "user badge"
+msgstr "foydalanuvchi nishoni"
+
+msgid "user badges"
+msgstr "foydalanuvchi nishonlari"
+
+msgid "earned at"
+msgstr "olingan vaqti"
+
+msgid "gamification activity log"
+msgstr "faollik jurnali"
+
+msgid "gamification activity logs"
+msgstr "faollik jurnallari"
+
+msgid "activity type"
+msgstr "faollik turi"
+
+msgid "XP earned"
+msgstr "olingan XP"
+
+# Case Studies App
+msgid "case study"
+msgstr "keys topshiriq"
+
+msgid "case studies"
+msgstr "keys topshiriqlari"
+
+msgid "XP reward"
+msgstr "mukofot XP ball"
+
+msgid "is active"
+msgstr "faol"
+
+msgid "scenario node"
+msgstr "ssenariy qadami"
+
+msgid "scenario nodes"
+msgstr "ssenariy qadamlari"
+
+msgid "is start node"
+msgstr "boshlang'ich qadam"
+
+msgid "is end node"
+msgstr "yakuniy qadam"
+
+msgid "is fail node"
+msgstr "muvaffaqiyatsiz qadam"
+
+msgid "from node"
+msgstr "boshlang'ich qadam"
+
+msgid "to node"
+msgstr "keyingi qadam"
+
+msgid "option text"
+msgstr "tanlov matni"
+
+msgid "feedback text"
+msgstr "qayta aloqa (huquqiy asos)"
+
+msgid "XP delta"
+msgstr "XP o'zgarishi"
+
+msgid "user case progress"
+msgstr "foydalanuvchi keys progressi"
+
+msgid "user case progresses"
+msgstr "foydalanuvchi keys progresslari"
+
+msgid "current node"
+msgstr "joriy qadam"
+
+msgid "is completed"
+msgstr "yakunlangan"
+
+msgid "started at"
+msgstr "boshlangan vaqti"
+
+msgid "updated at"
+msgstr "yangilangan vaqti"
+
+# Simulator App
+msgid "Incoming mail"
+msgstr "Kiruvchi xat"
+
+msgid "Outgoing mail"
+msgstr "Chiquvchi xat"
+
+msgid "Internal order"
+msgstr "Ichki buyruq"
+
+msgid "Beginner (Easy)"
+msgstr "Boshlang'ich (Oson)"
+
+msgid "Intermediate"
+msgstr "O'rta daraja"
+
+msgid "Advanced (Complex)"
+msgstr "Yuqori (Murakkab)"
+
+msgid "scenario title"
+msgstr "ssenariy sarlavhasi"
+
+msgid "document type"
+msgstr "hujjat turi"
+
+msgid "difficulty"
+msgstr "murakkablik darajasi"
+
+msgid "Initial layout of the document (number, date, outgoing organization, summary, file)"
+msgstr "Hujjatning dastlabki ko'rinishi (raqam, sana, chiquvchi idora, qisqacha mazmun, fayl)"
+
+msgid "Sequence of steps that must be completed correctly"
+msgstr "To'g'ri bajarilishi kerak bo'lgan bosqichlar ketma-ketligi"
+
+msgid "simulation scenario"
+msgstr "simulyatsiya ssenariysi"
+
+msgid "simulation scenarios"
+msgstr "simulyatsiya ssenariylari"
+
+msgid "simulation session"
+msgstr "simulyatsiya sessiyasi"
+
+msgid "simulation sessions"
+msgstr "simulyatsiya sessiyalari"
+
+msgid "current step"
+msgstr "joriy bosqich"
+
+msgid "History of actions performed by the user"
+msgstr "Foydalanuvchi tomonidan bajarilgan harakatlar tarixi"
+
+msgid "XP score"
+msgstr "to'plangan XP"

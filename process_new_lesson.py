@@ -3,7 +3,15 @@ import sys
 import argparse
 import subprocess
 import urllib.request
+import logging
 from pathlib import Path
+
+# Load core logging configuration
+from core.logging_setup import setup_logging
+
+# Initialize logging for this script
+setup_logging("process_new_lesson.log")
+logger = logging.getLogger("process_new_lesson")
 
 # Kerakli kutubxonalarni tekshirib o'rnatamiz
 def install_and_import(package, install_name=None):
@@ -11,8 +19,12 @@ def install_and_import(package, install_name=None):
         __import__(package)
     except ImportError:
         inst_name = install_name or package
-        print(f"Kutubxona o'rnatilmoqda: {inst_name}...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", inst_name])
+        logger.info(f"Kutubxona o'rnatilmoqda: {inst_name}...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", inst_name])
+        except Exception as e:
+            logger.exception(f"Kutubxonani o'rnatishda xatolik yuz berdi ({inst_name}): {e}")
+            raise
 
 install_and_import("yt_dlp", "yt-dlp")
 install_and_import("cv2", "opencv-python")
@@ -32,23 +44,23 @@ load_dotenv(BASE_DIR / ".env")
 
 def get_free_proxies():
     """YouTube cheklovlarini aylanib o'tish uchun bepul proksilarni yuklab olish."""
-    print("\nYouTube IP blokini chetlab o'tish uchun bepul proksilarni yuklab olamiz...")
+    logger.info("YouTube IP blokini chetlab o'tish uchun bepul proksilarni yuklab olamiz...")
     try:
         url = "https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=5000&country=all&ssl=all&anonymity=all"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=5) as response:
             content = response.read().decode("utf-8")
         proxies = [line.strip() for line in content.split("\n") if line.strip()]
-        print(f"Jami {len(proxies)} ta bepul proksilar topildi.")
+        logger.info(f"Jami {len(proxies)} ta bepul proksilar topildi.")
         return proxies[:15]
     except Exception as e:
-        print(f"Bepul proksilarni yuklab olishda xatolik: {e}")
+        logger.error(f"Bepul proksilarni yuklab olishda xatolik: {e}")
         return []
 
 
 def download_audio_only(url, output_path):
     """YouTube-dan faqat audio formatni eng kichik hajmda yuklab olish."""
-    print(f"\nYouTube-dan audio oqimni yuklab olish boshlandi: {url}")
+    logger.info(f"YouTube-dan audio oqimni yuklab olish boshlandi: {url}")
     if output_path.exists():
         try:
             output_path.unlink()
@@ -71,7 +83,7 @@ def download_audio_only(url, output_path):
             ydl.download([url])
         return True
     except Exception as e:
-        print(f"Audioni yuklab bo'lmadi: {e}")
+        logger.error(f"Audioni yuklab bo'lmadi: {e}")
         return False
 
 
@@ -81,11 +93,11 @@ def transcribe_local_audio_whisper(audio_or_video_path, output_txt_path):
     install_and_import("faster_whisper", "faster-whisper")
     from faster_whisper import WhisperModel
 
-    print(f"\n[AI ASR] faster-whisper modeli yuklanmoqda (model: base)...")
+    logger.info("[AI ASR] faster-whisper modeli yuklanmoqda (model: base)...")
     try:
         # CPU-da juda tez va kam xotira bilan ishlashi uchun 'base' (140MB) va 'int8' ishlatamiz
         model = WhisperModel("base", device="cpu", compute_type="int8")
-        print("[AI ASR] Nutqni matnga aylantirish boshlandi. Iltimos kuting...")
+        logger.info("[AI ASR] Nutqni matnga aylantirish boshlandi. Iltimos kuting...")
         
         segments, info = model.transcribe(str(audio_or_video_path), beam_size=5, language="uz")
         
@@ -96,29 +108,29 @@ def transcribe_local_audio_whisper(audio_or_video_path, output_txt_path):
                 seconds = int(segment.start % 60)
                 f.write(f"[{minutes:02d}:{seconds:02d}] {segment.text}\n")
                 
-        print(f"[AI ASR] Transkript muvaffaqiyatli saqlandi: {output_txt_path}")
+        logger.info(f"[AI ASR] Transkript muvaffaqiyatli saqlandi: {output_txt_path}")
         return True
     except Exception as e:
-        print(f"[AI ASR] Ovozni matnga o'girishda xatolik yuz berdi: {e}")
+        logger.exception(f"[AI ASR] Ovozni matnga o'girishda xatolik yuz berdi: {e}")
         return False
 
 
 def fetch_transcript(video_id, output_txt_path):
     """YouTube API orqali transkriptni yuklash (agar u mavjud bo'lsa)."""
-    print(f"\nVideo transkriptini YouTube API-dan yuklash boshlandi (ID: {video_id})...")
+    logger.info(f"Video transkriptini YouTube API-dan yuklash boshlandi (ID: {video_id})...")
     proxy_url = os.getenv("PROXY_URL")
     transcript_list = None
 
     # 1. .env proksini tekshirish
     if proxy_url:
-        print(f".env faylidagi proksidan foydalanilmoqda: {proxy_url}")
+        logger.info(f".env faylidagi proksidan foydalanilmoqda: {proxy_url}")
         try:
             proxy_config = GenericProxyConfig(http_url=proxy_url, https_url=proxy_url)
             transcript_list = YouTubeTranscriptApi(proxy_config=proxy_config).fetch(
                 video_id, languages=["uz", "ru", "en"]
             )
         except Exception as e:
-            print(f".env proksisi xatolik berdi: {e}")
+            logger.warning(f".env proksisi xatolik berdi: {e}")
 
     # 2. Bepul proksilar rotatsiyasi
     if not transcript_list:
@@ -130,7 +142,7 @@ def fetch_transcript(video_id, output_txt_path):
                 transcript_list = YouTubeTranscriptApi(proxy_config=proxy_config).fetch(
                     video_id, languages=["uz", "ru", "en"]
                 )
-                print(f"Muvaffaqiyatli yuklandi (Proksi: {proxy_address})!")
+                logger.info(f"Muvaffaqiyatli yuklandi (Proksi: {proxy_address})!")
                 break
             except Exception:
                 pass
@@ -152,16 +164,16 @@ def fetch_transcript(video_id, output_txt_path):
                 minutes = int(start // 60)
                 seconds = int(start % 60)
                 f.write(f"[{minutes:02d}:{seconds:02d}] {text}\n")
-        print(f"Transkript API orqali yuklandi va saqlandi: {output_txt_path}")
+        logger.info(f"Transkript API orqali yuklandi va saqlandi: {output_txt_path}")
         return True
 
-    print("[Ogohlantirish] YouTube API orqali transkript topilmadi (subtitr yo'q yoki IP bloklangan).")
+    logger.warning("YouTube API orqali transkript topilmadi (subtitr yo'q yoki IP bloklangan).")
     return False
 
 
 def download_video(url, output_path):
     """Proksi va kukilarni aylanib o'tish bilan videoni 720p yuklash."""
-    print(f"\nYouTube videoni 720p sifatda yuklab olish boshlandi: {url}")
+    logger.info(f"YouTube videoni 720p sifatda yuklab olish boshlandi: {url}")
     if output_path.exists():
         try:
             output_path.unlink()
@@ -171,7 +183,7 @@ def download_video(url, output_path):
     # Cookies.txt tekshirish
     cookie_file = BASE_DIR / "cookies.txt"
     if cookie_file.exists():
-        print(f"Loyiha papkasidagi cookies.txt fayli ishlatilmoqda...")
+        logger.info("Loyiha papkasidagi cookies.txt fayli ishlatilmoqda...")
         ydl_opts = {
             "format": "best[height<=720]/bestvideo[height<=720]+bestaudio/best",
             "outtmpl": str(output_path.with_suffix("")),
@@ -185,12 +197,12 @@ def download_video(url, output_path):
                 ydl.download([url])
             return True
         except Exception as e:
-            print(f"cookies.txt orqali yuklash o'xshamadi: {e}")
+            logger.warning(f"cookies.txt orqali yuklash o'xshamadi: {e}")
 
     # Brauzer kukilari
     browsers = ["chrome", "edge", "firefox", "opera"]
     for browser in browsers:
-        print(f"Browser cookies orqali yuklashga urinib ko'ramiz: {browser}")
+        logger.info(f"Browser cookies orqali yuklashga urinib ko'ramiz: {browser}")
         ydl_opts = {
             "format": "best[height<=720]/bestvideo[height<=720]+bestaudio/best",
             "outtmpl": str(output_path.with_suffix("")),
@@ -202,13 +214,13 @@ def download_video(url, output_path):
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
-            print(f"Muvaffaqiyatli yuklandi! Ishlatilgan brauzer: {browser}")
+            logger.info(f"Muvaffaqiyatli yuklandi! Ishlatilgan brauzer: {browser}")
             return True
         except Exception:
             pass
 
     # Proksilar rotatsiyasi
-    print("\nBrauzer cookies orqali yuklab bo'lmadi. Bepul proksilar rotatsiyasini boshlaymiz...")
+    logger.info("Brauzer cookies orqali yuklab bo'lmadi. Bepul proksilar rotatsiyasini boshlaymiz...")
     free_proxies = get_free_proxies()
     for proxy in free_proxies:
         proxy_address = f"http://{proxy}"
@@ -224,13 +236,13 @@ def download_video(url, output_path):
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([url])
-            print(f"Muvaffaqiyatli yuklandi! Ishlatilgan proksi: {proxy_address}")
+            logger.info(f"Muvaffaqiyatli yuklandi! Ishlatilgan proksi: {proxy_address}")
             return True
         except Exception:
             pass
 
     # Oxirgi chora
-    print("\nTo'g'ridan-to'g'ri cookies-siz urinib ko'ramiz...")
+    logger.info("To'g'ridan-to'g'ri cookies-siz urinib ko'ramiz...")
     try:
         ydl_opts = {
             "format": "best[height<=720]/bestvideo[height<=720]+bestaudio/best",
@@ -243,24 +255,24 @@ def download_video(url, output_path):
             ydl.download([url])
         return True
     except Exception as e:
-        print(f"Videoni yuklab bo'lmadi: {e}")
+        logger.error(f"Videoni yuklab bo'lmadi: {e}")
         return False
 
 
 def extract_keyframes(video_path, output_dir, interval_seconds):
     """Videodan kadrlarni ajratib olish va alohida papkaga saqlash."""
-    print(f"\nVideodan kadrlar (skrinshotlar) ajratib olish boshlandi: {video_path}")
+    logger.info(f"Videodan kadrlar (skrinshotlar) ajratib olish boshlandi: {video_path}")
     cap = cv2.VideoCapture(str(video_path))
 
     if not cap.isOpened():
-        print("Xatolik: Videoni ochib bo'lmadi!")
+        logger.error("Xatolik: Videoni ochib bo'lmadi!")
         return False
 
     fps = cap.get(cv2.CAP_PROP_FPS)
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     duration = total_frames / fps
 
-    print(f"Video parametrlari: FPS: {fps:.2f}, Jami kadrlar: {total_frames}, Davomiyligi: {duration:.2f} soniya")
+    logger.info(f"Video parametrlari: FPS: {fps:.2f}, Jami kadrlar: {total_frames}, Davomiyligi: {duration:.2f} soniya")
 
     saved_count = 0
     for sec in range(0, int(duration), interval_seconds):
@@ -272,11 +284,11 @@ def extract_keyframes(video_path, output_dir, interval_seconds):
             filename = f"frame_{sec:03d}s.jpg"
             filepath = output_dir / filename
             cv2.imwrite(str(filepath), frame, [int(cv2.IMWRITE_JPEG_QUALITY), 95])
-            print(f"Kadr saqlandi: {filename} (Vaqt: {sec}s)")
+            logger.info(f"Kadr saqlandi: {filename} (Vaqt: {sec}s)")
             saved_count += 1
 
     cap.release()
-    print(f"\nAjratish yakunlandi. Jami {saved_count} ta rasm {output_dir} papkasida saqlandi.")
+    logger.info(f"Ajratish yakunlandi. Jami {saved_count} ta rasm {output_dir} papkasida saqlandi.")
     return True
 
 
@@ -324,7 +336,7 @@ def main():
 
     # B. Agar transkript yuklanmagan bo'lsa, local audio/video orqali Whisper yordamida yaratamiz!
     if not transcript_success:
-        print("\nYouTube API transkripti topilmadi. Mahalliy sun'iy intellekt (ASR faster-whisper) orqali transkripsiyani boshlaymiz...")
+        logger.info("YouTube API transkripti topilmadi. Mahalliy sun'iy intellekt (ASR faster-whisper) orqali transkripsiyani boshlaymiz...")
         
         # Ovoz beruvchi fayl
         audio_source = None
@@ -342,10 +354,13 @@ def main():
             
             # Vaqtinchalik audio faylni o'chiramiz
             if audio_source == temp_audio and temp_audio.exists():
-                os.remove(temp_audio)
-                print("Vaqtinchalik yuklangan audio oqim o'chirildi.")
+                try:
+                    os.remove(temp_audio)
+                    logger.info("Vaqtinchalik yuklangan audio oqim o'chirildi.")
+                except Exception as e:
+                    logger.warning(f"Vaqtinchalik audio faylni o'chirishda xatolik: {e}")
         else:
-            print("[Xatolik] Nutqni matnga o'girish uchun video yoki audio fayl manbai topilmadi!")
+            logger.error("Nutqni matnga o'girish uchun video yoki audio fayl manbai topilmadi!")
 
     # 2. Videodan skrinshotlar ajratish
     temp_video = BASE_DIR / f"temp_{slug}.mp4"
@@ -358,15 +373,17 @@ def main():
         extract_keyframes(local_video_path, lesson_media_dir, args.interval)
         # Vaqtinchalik faylni o'chirish
         if local_video_path == temp_video and temp_video.exists():
-            os.remove(temp_video)
-            print("\nVaqtinchalik yuklangan video fayl o'chirildi.")
+            try:
+                os.remove(temp_video)
+                logger.info("Vaqtinchalik yuklangan video fayl o'chirildi.")
+            except Exception as e:
+                logger.warning(f"Vaqtinchalik video faylni o'chirishda xatolik: {e}")
     else:
-        print("\n[Ogohlantirish] Skrinshotlarni ajratish uchun video topilmadi!")
+        logger.warning("Skrinshotlarni ajratish uchun video topilmadi!")
 
-    print("\n=== JARAYON YAKUNLANDI ===")
-    print(f"1. Rasmlar papkasi: {lesson_media_dir}")
-    print(f"2. Transkript fayli: {transcript_file if transcript_file.exists() else 'Yaratilmadi'}")
-    print("==========================")
+    logger.info("=== JARAYON YAKUNLANDI ===")
+    logger.info(f"1. Rasmlar papkasi: {lesson_media_dir}")
+    logger.info(f"2. Transkript fayli: {transcript_file if transcript_file.exists() else 'Yaratilmadi'}")
 
 
 if __name__ == "__main__":
