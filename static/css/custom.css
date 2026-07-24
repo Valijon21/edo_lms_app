@@ -173,3 +173,47 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Purple and additional color utilities */
+.text-purple {
+  color: #9333ea !important;
+}
+
+.btn-outline-purple {
+  color: #9333ea !important;
+  border-color: #9333ea !important;
+}
+
+.btn-outline-purple:hover {
+  background-color: #9333ea !important;
+  color: #ffffff !important;
+}
+
+.border-purple {
+  border-color: #e9d5ff !important;
+}
+
+.bg-purple-50 {
+  background-color: #faf5ff !important;
+}
+
+.hover\:bg-purple-50:hover {
+  background-color: #faf5ff !important;
+}
+
+.hover\:text-purple-600:hover {
+  color: #9333ea !important;
+}
+
+/* Additional border colors for home cards */
+.border-info {
+  border-color: #0dcaf0 !important;
+}
+
+.border-warning {
+  border-color: #ffc107 !important;
+}
+
+.border-danger {
+  border-color: #dc3545 !important;
+}

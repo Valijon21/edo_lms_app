@@ -42,15 +42,48 @@
       </div>
     </div>
 
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center border-purple">
+        <div class="mb-3 text-purple">
+          <i class="bi bi-journal-text display-4"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Keyslar Tahlili</h3>
+        <p class="text-muted flex-grow-1">Real vaziyatlarni tahlil qiling va to'g'ri qaror qabul qilishni o'rganing.</p>
+        <a href="{% url 'case_studies:list' %}" class="btn btn-outline-purple rounded-pill w-100 py-2 fw-bold">Boshlash</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center border-info">
+        <div class="mb-3 text-info">
+          <i class="bi bi-controller display-4"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Interaktiv Simulyator</h3>
+        <p class="text-muted flex-grow-1">Tizimda amaliy ishlashni mashq qiling va ko'nikmalaringizni oshiring.</p>
+        <a href="{% url 'simulator:simulator_home' %}" class="btn btn-outline-info rounded-pill w-100 py-2 fw-bold">Kirish</a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center border-warning">
+        <div class="mb-3 text-warning">
+          <i class="bi bi-trophy display-4"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Gamifikatsiya</h3>
+        <p class="text-muted flex-grow-1">XP ballar to'plang, nishonlar qo'lga kiriting va reytingda yuksaling.</p>
+        <a href="{% url 'gamification:profile' %}" class="btn btn-outline-warning rounded-pill w-100 py-2 fw-bold">Profilim</a>
+      </div>
+    </div>
+
     {% if user.profile.role == 'rahbar' or user.profile.role == 'nazoratchi' %}
       <div class="col-md-6 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center border-warning">
-          <div class="mb-3 text-warning">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center border-danger">
+          <div class="mb-3 text-danger">
             <i class="bi bi-shield-lock display-4"></i>
           </div>
-          <h3 class="fw-bold mb-2 text-warning">Nazorat Paneli</h3>
+          <h3 class="fw-bold mb-2">Nazorat Paneli</h3>
           <p class="text-muted flex-grow-1">Xodimlarning o'zlashtirish foizlari va test urinishlari statistikasini monitoring qilish.</p>
-          <a href="{% url 'progress:manager_dashboard' %}" class="btn btn-outline-warning rounded-pill w-100 py-2 fw-bold">Panelga kirish</a>
+          <a href="{% url 'progress:manager_dashboard' %}" class="btn btn-outline-danger rounded-pill w-100 py-2 fw-bold">Panelga kirish</a>
         </div>
       </div>
     {% endif %}
